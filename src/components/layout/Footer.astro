@@ -1,0 +1,287 @@
+---
+// src/components/layout/Footer.astro
+// Server-rendered footer — no string concatenation.
+// Social brand icons use react-icons/ri inline SVGs (inline SVG approach for Astro context).
+---
+
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-logo">
+        <img src="/assets/images/lateslogo(1)(1)(1).webp" alt="DOYEN Group of Companies" />
+      </div>
+
+      <div>
+        <h4>About Us</h4>
+        <ul class="footer-links">
+          <li><a href="/about#who-we-are">Who We Are</a></li>
+          <li><a href="/about#our-journey">Our Journey</a></li>
+          <li><a href="/about#our-story">Our Story</a></li>
+          <li><a href="/about#mission-vision">Mission &amp; Vision</a></li>
+          <li><a href="/about#why-partner">Why Partner With Us</a></li>
+          <li><a href="/about#our-facilities">Our Facilities</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4>Products</h4>
+        <ul class="footer-links">
+          <li><a href="/products?category=tires">Tires</a></li>
+          <li><a href="/products?category=battery">Battery</a></li>
+          <li><a href="/products?category=fuel">Fuel/Diesel</a></li>
+          <li><a href="/products?category=fuel_storage_tank">Tanks</a></li>
+          <li><a href="/products?category=fuel_dispenser">Fuel Dispenser</a></li>
+          <li><a href="/products?category=lpg">LPG</a></li>
+          <li><a href="/products?category=sinotruk">Trucks</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4>Quick Links</h4>
+        <ul class="footer-links">
+          <li><a href="/">Home</a></li>
+          <li><a href="/about">About Us</a></li>
+          <li><a href="/news">Events</a></li>
+          <li><a href="/careers">Careers</a></li>
+          <li><a href="/contact">Contact Us</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-contact-col">
+        <h4>Contact Us</h4>
+        <ul class="footer-contact-list">
+          <li>
+            <!-- MapPin icon (lucide) -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+            2108 Lamesa St., Brgy. Ugong, Valenzuela City, Metro Manila
+          </li>
+          <li>
+            <!-- Mail icon -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+            sales.marketing@doyenph.com
+          </li>
+          <li>
+            <!-- Phone icon -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2.22c.86-.09 1.73.36 2.19 1.13l1.5 2.6a2 2 0 0 1-.45 2.44L5.86 9.7a16 16 0 0 0 6.44 6.44l1.31-.98a2 2 0 0 1 2.44-.45l2.6 1.5a2 2 0 0 1 1.12 2.19z"/></svg>
+            (02) 7002 1759
+          </li>
+          <li>
+            <!-- Smartphone icon -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg>
+            (+63) 993 588 0695
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="copyright">&copy; 2026 Doyen Group of Companies. All rights reserved.</div>
+
+      <div class="footer-bottom-links">
+        <a href="/terms">Terms of Use</a>
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/faq">FAQ</a>
+      </div>
+
+      <div class="footer-social">
+        <!-- Facebook — react-icons/ri: RiFacebookFill (inline SVG equivalent) -->
+        <a
+          href="https://web.facebook.com/profile.php?id=61590590125699"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="social-link facebook"
+          aria-label="DOYEN on Facebook"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+          Facebook
+        </a>
+
+        <!-- Instagram — RiInstagramLine -->
+        <a
+          href="https://www.instagram.com/doyen_philippines/"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="social-link instagram"
+          aria-label="DOYEN on Instagram"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
+          Instagram
+        </a>
+
+        <!-- TikTok — RiTiktokFill -->
+        <a
+          href="https://www.tiktok.com/@doyen_ph"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="social-link tiktok"
+          aria-label="DOYEN on TikTok"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34v-7a8.16 8.16 0 0 0 4.77 1.52V6.4a4.85 4.85 0 0 1-1-.29z"/></svg>
+          TikTok
+        </a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<style>
+  footer {
+    background-color: #fff;
+    color: #333;
+    padding: 1.4rem 0 1rem;
+    border-top: 3px solid var(--primary);
+  }
+
+  .footer-top {
+    display: grid;
+    grid-template-columns: 14rem 1fr 1fr 1fr 1.6fr;
+    gap: 1.5rem 2rem;
+    margin-bottom: 1rem;
+    align-items: start;
+  }
+
+  .footer-logo img {
+    height: 35px;
+    margin-bottom: 0.5rem;
+    filter: brightness(1.4) contrast(1.2);
+  }
+
+  .footer-top > div h4 {
+    color: var(--primary);
+    font-size: 1.1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    margin-bottom: 0.6rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+  }
+
+  .footer-links {
+    list-style: none;
+  }
+
+  .footer-links li {
+    margin-bottom: 0.3rem;
+  }
+
+  .footer-links a {
+    color: #555;
+    font-size: 1.15rem;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .footer-links a:hover {
+    color: var(--primary);
+    padding-left: 4px;
+  }
+
+  .footer-contact-list {
+    list-style: none;
+  }
+
+  .footer-contact-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    margin-bottom: 0.5rem;
+    font-size: 1.15rem;
+    color: #555;
+    line-height: 1.4;
+  }
+
+  .footer-contact-list svg {
+    color: var(--primary);
+    margin-top: 0.3rem;
+    flex-shrink: 0;
+  }
+
+  .footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 0.8rem;
+    border-top: 1px solid rgba(0,0,0,0.1);
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+
+  .copyright {
+    font-size: 1.1rem;
+    color: #666;
+  }
+
+  .footer-bottom-links {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    flex-wrap: wrap;
+  }
+
+  .footer-bottom-links a {
+    color: #666;
+    font-size: 1.1rem;
+    transition: color 0.2s;
+  }
+
+  .footer-bottom-links a:hover {
+    color: var(--primary);
+  }
+
+  .footer-social {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .social-link {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    color: #666;
+    font-size: 1.1rem;
+    transition: color 0.2s;
+  }
+
+  .social-link svg {
+    width: 1.4rem;
+    height: 1.4rem;
+  }
+
+  .social-link.facebook:hover { color: #1877F2; }
+  .social-link.instagram:hover { color: #E1306C; }
+  .social-link.tiktok:hover { color: #010101; }
+
+  @media (max-width: 768px) {
+    .footer-top {
+      grid-template-columns: 1fr 1fr;
+    }
+    .footer-logo {
+      grid-column: 1 / -1;
+    }
+    .footer-bottom {
+      flex-direction: column;
+      text-align: center;
+    }
+    .footer-social,
+    .footer-bottom-links {
+      justify-content: center;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .footer-top { grid-template-columns: 1fr; }
+    .footer-contact-col { grid-column: 1 / -1; }
+  }
+</style>
+
+<style is:global>
+  /* nav-open body lock — must be global to apply on body element */
+  body.nav-open {
+    overflow: hidden !important;
+    position: fixed;
+    width: 100%;
+  }
+</style>

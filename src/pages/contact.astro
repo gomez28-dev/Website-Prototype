@@ -1,0 +1,685 @@
+---
+// src/pages/contact.astro
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ContactForm from '../components/contact/ContactForm';
+---
+
+<BaseLayout
+  title="Contact Us – DOYEN Group of Companies"
+  description="Get in touch with DOYEN for inquiries about Sinotruk vehicles, tires, batteries, fuel dispensers, and LPG products."
+>
+  <section class="contact-section">
+    <div class="contact-wrapper">
+      <div class="contact-header-card">
+        <h2>Get in Touch with DOYEN</h2>
+        <p>We'll respond to your inquiry as soon as possible — usually within 24 hours.</p>
+      </div>
+
+      <!-- React contact form island -->
+      <ContactForm client:load />
+
+      <div class="contact-info-strip">
+        <div class="info-card">
+          <div class="info-card-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+          <h4>Head Office</h4>
+          <p>2108 Lamesa St., Brgy. Ugong,<br />Valenzuela City, Metro Manila</p>
+        </div>
+        
+        <div class="info-card">
+          <div class="info-card-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          </div>
+          <h4>Phone</h4>
+          <p>(02) 7002 1759<br />(+63) 993 588 0695</p>
+        </div>
+
+        <div class="info-card">
+          <div class="info-card-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+          </div>
+          <h4>Email</h4>
+          <p>sales.marketing@doyenph.com</p>
+        </div>
+
+        <div class="info-card">
+          <div class="info-card-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" x2="12" y1="2" y2="15"/></svg>
+          </div>
+          <h4>Follow Us</h4>
+          <div class="social-row">
+            <a
+              href="https://web.facebook.com/profile.php?id=61590590125699"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="facebook"
+              aria-label="Facebook"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+            </a>
+            <a href="https://www.instagram.com/doyen_philippines/" target="_blank" rel="noopener noreferrer" class="instagram" aria-label="Instagram">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
+            </a>
+            <a href="https://www.tiktok.com/@doyen_ph" target="_blank" rel="noopener noreferrer" class="tiktok" aria-label="TikTok">
+              <!-- Inline Tik Tok SVG since Lucide doesn't bundle TikTok directly -->
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M9 0h1.98c.144.715.54 1.617 1.235 2.512C12.895 3.389 13.797 4 15 4v2c-1.753 0-3.07-.814-4-1.829V11a5 5 0 1 1-5-5v2a3 3 0 1 0 3 3V0Z"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MAP -->
+  <div class="map-section">
+    <iframe
+      src="https://maps.google.com/maps?q=14.6855,121.0118&z=17&output=embed"
+      loading="lazy"
+      allowfullscreen
+      referrerpolicy="no-referrer-when-downgrade"
+      title="DOYEN Head Office Location"
+      aria-label="Google Map showing DOYEN office location in Valenzuela City"
+    ></iframe>
+    <div class="map-pin-overlay" id="mapPin">
+      <div class="map-pin-bubble">
+        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-top:2px;"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+        <span>DOYEN GROUP</span>
+      </div>
+      <div class="map-pin-stem"></div>
+      <div class="map-pin-pulse"></div>
+    </div>
+    <div class="map-address-pill">
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+      <span>2108 Lamesa St., Brgy. Ugong, Valenzuela City, Metro Manila</span>
+    </div>
+    <a
+      href="https://www.google.com/maps/search/2108+Lamesa+St,+Brgy.+Ugong,+Valenzuela+City,+Metro+Manila/@14.6855,121.0118,17z"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="map-open-btn"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" x2="21" y1="14" y2="3"/></svg>
+      Open in Google Maps
+    </a>
+  </div>
+
+  <!-- CTA -->
+  <section class="cta-mock">
+    <h2>Need Help Finding the Right Product?</h2>
+    <p>Contact our team for expert advice and personalized product recommendations for your specific needs</p>
+    <div class="cta-btns">
+      <a href="/products" class="cta-btn primary">View Products</a>
+      <a href="/about" class="cta-btn secondary">Learn More</a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .contact-section {
+    padding: 70px 20px 80px;
+    background: #FFF;
+    min-height: 60vh;
+  }
+  .contact-wrapper {
+    max-width: 1000px;
+    margin: 0 auto;
+    margin-top: 5rem;
+  }
+  .contact-header-card {
+    background: var(--primary);
+    padding: 34px 40px;
+    text-align: center;
+    color: white;
+    position: relative;
+    overflow: hidden;
+  }
+  .contact-header-card::before {
+    content: '';
+    position: absolute;
+    top: -40px;
+    right: -40px;
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.05);
+  }
+  .contact-header-card::after {
+    content: '';
+    position: absolute;
+    bottom: -60px;
+    left: -30px;
+    width: 220px;
+    height: 220px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.04);
+  }
+  .contact-header-card h2 {
+    color: white;
+    font-family: var(--font-heading);
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 0.6rem;
+    position: relative;
+    z-index: 1;
+    text-transform: uppercase;
+  }
+  .contact-header-card p {
+    color: rgba(255,255,255,0.82);
+    font-size: 1.45rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Form and React Wrapper Styles (Ported from prototype style.css) */
+  :global(.contact-form-body-wrapper) {
+    position: relative;
+  }
+  :global(#contactForm) {
+    background: white;
+    padding: 44px 48px 36px;
+    box-shadow: 0 8px 40px rgba(255,36,0,0.08);
+  }
+  :global(.form-grid) {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px 32px;
+    margin-bottom: 24px;
+  }
+  :global(.form-full) {
+    grid-column: 1 / -1;
+  }
+  :global(.form-group) {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  :global(.form-group label) {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--dark);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  :global(.form-group label .req) {
+    color: var(--primary);
+    font-size: 1.3rem;
+  }
+  :global(.input-wrap) {
+    position: relative;
+  }
+  :global(.input-wrap input),
+  :global(.input-wrap textarea) {
+    width: 100%;
+    padding: 13px 44px 13px 16px;
+    border: 1.5px solid var(--teal-border);
+    font-size: 1.45rem;
+    font-family: inherit;
+    background: #FFF;
+    color: #595959;
+    transition: border-color 0.25s, box-shadow 0.25s, background 0.25s;
+    border-radius: 0;
+  }
+  :global(.input-wrap input::placeholder),
+  :global(.input-wrap textarea::placeholder) {
+    color: #c3c7c7;
+    font-size: 1.35rem;
+  }
+  :global(.input-wrap input:focus),
+  :global(.input-wrap textarea:focus) {
+    outline: none;
+    border-color: #c3c7c7;
+    background: #fff;
+  }
+  :global(.input-wrap .field-icon) {
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #ff6633;
+    pointer-events: none;
+  }
+  :global(.input-wrap.textarea-wrap .field-icon) {
+    top: 18px;
+    transform: none;
+  }
+  :global(.input-wrap textarea) {
+    min-height: 130px;
+    resize: vertical;
+    padding-top: 13px;
+    line-height: 1.6;
+    padding-bottom: 30px;
+  }
+  :global(.phone-hint) {
+    font-size: 1.2rem;
+    color: #aaa;
+    margin-top: 4px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 6px;
+  }
+  :global(.phone-hint .digit-count) {
+    color: var(--primary);
+    font-weight: 600;
+  }
+  :global(.phone-hint .digit-count.valid) {
+    color: #2ecc71;
+  }
+  :global(.phone-error) {
+    color: #e74c3c !important;
+  }
+
+  /* Country select dropdown */
+  :global(.country-select) {
+    width: 100%;
+    padding: 13px 44px 13px 16px;
+    border: 1.5px solid var(--teal-border);
+    font-size: 1.45rem;
+    font-family: inherit;
+    background: #FFF;
+    color: #595959;
+    transition: border-color 0.25s, box-shadow 0.25s, background 0.25s;
+    border-radius: 0;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23999' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    padding-right: 40px;
+  }
+  :global(.country-select:focus) {
+    outline: none;
+    border-color: #c3c7c7;
+    background-color: #fff;
+  }
+  :global(.country-select option) {
+    font-size: 1.4rem;
+    padding: 8px;
+  }
+
+  /* Phone input wrapper */
+  :global(.phone-input-wrapper) {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  /* Hide react-phone-number-input's built-in country selector */
+  :global(.PhoneInputCountry) {
+    display: none !important;
+  }
+
+  /* Style the phone input container */
+  :global(.PhoneInput) {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    border: 1.5px solid var(--teal-border);
+    background: #FFF;
+    transition: border-color 0.25s, box-shadow 0.25s, background 0.25s;
+    border-radius: 0;
+  }
+  :global(.PhoneInput:focus-within) {
+    outline: none;
+    border-color: #c3c7c7;
+    background: #fff;
+  }
+  :global(.PhoneInput input) {
+    flex: 1;
+    border: none !important;
+    outline: none;
+    padding: 13px 16px;
+    font-size: 1.45rem;
+    font-family: inherit;
+    color: #595959;
+    background: transparent;
+    width: 100%;
+  }
+  :global(.PhoneInput input::placeholder) {
+    color: #c3c7c7;
+    font-size: 1.35rem;
+  }
+  :global(.PhoneInputCountrySelectArrow) {
+    display: none;
+  }
+
+  /* Disabled state for phone input */
+  :global(.PhoneInput--disabled) {
+    opacity: 0.6;
+    background: #f5f5f5;
+    cursor: not-allowed;
+  }
+  :global(.PhoneInput--disabled input) {
+    cursor: not-allowed;
+  }
+  :global(.char-counter) {
+    position: absolute;
+    bottom: 8px;
+    right: 12px;
+    font-size: 1.15rem;
+    color: #b0b0b0;
+    pointer-events: none;
+    line-height: 1;
+    background: transparent;
+    transition: color 0.2s;
+  }
+  :global(.char-counter.near) {
+    color: #f0a500;
+    font-weight: 600;
+  }
+  :global(.char-counter.over) {
+    color: #e74c3c;
+    font-weight: 700;
+  }
+
+  /* Regarding field styling */
+  :global(.regarding-group) {
+    margin-bottom: 2rem;
+  }
+  :global(.input-regarding) {
+    background: var(--light) !important;
+    border-color: var(--teal-border) !important;
+    color: var(--dark) !important;
+    font-weight: 600;
+  }
+
+  /* Submission Overlay & Buttons */
+  :global(.sending-overlay) {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 1.4rem;
+  }
+  :global(.sending-overlay.active) {
+    display: flex;
+  }
+  :global(.sending-spinner) {
+    width: 52px;
+    height: 52px;
+    border: 5px solid rgba(255,255,255,0.3);
+    border-top-color: var(--primary);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+  :global(.sending-overlay p) {
+    color: #fff;
+    font-size: 1.6rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+  }
+  :global(.submit-area) {
+    text-align: center;
+    margin-top: 12px;
+  }
+  :global(.submit-btn-teal) {
+    background: var(--light);
+    color: var(--primary);
+    border: none;
+    padding: 10px 20px;
+    font-size: 1.6rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    letter-spacing: 0.03em;
+    box-shadow: 0 4px 18px rgba(204,26,0,0.25);
+    font-family: var(--font-heading);
+    text-transform: uppercase;
+    border-radius: 50px;
+  }
+  :global(.submit-btn-teal:hover) {
+    transform: translateY(-2px);
+    background: var(--primary);
+    color: white;
+  }
+  :global(.security-note) {
+    text-align: center;
+    margin-top: 18px;
+    font-size: 1.3rem;
+    color: #b06050;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+  }
+  :global(.security-note svg) {
+    color: var(--primary);
+  }
+
+  /* Info Strip cards */
+  .contact-info-strip {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    max-width: 1000px;
+    margin: 36px auto 0;
+  }
+  .info-card {
+    background: white;
+    padding: 22px 18px;
+    text-align: center;
+    box-shadow: 0 3px 16px rgba(255,36,0,0.09);
+    border-top: 3px solid var(--primary);
+    transition: transform 0.25s, box-shadow 0.25s;
+  }
+  .info-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 28px rgba(255,36,0,0.16);
+  }
+  .info-card-icon {
+    width: 48px;
+    height: 48px;
+    background: var(--primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 12px;
+    color: white;
+  }
+  .info-card h4 {
+    font-family: var(--font-heading);
+    font-size: 1.6rem;
+    color: #cc1a00;
+    margin-bottom: 6px;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+  .info-card p {
+    font-size: 1.35rem;
+    color: #666;
+    line-height: 1.5;
+    word-break: break-word;
+  }
+
+  /* Social row in info card */
+  .social-row {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 8px;
+  }
+  .social-row a {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: #fff4f2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary);
+    transition: all 0.3s;
+  }
+  .social-row a.facebook:hover { background: #1877F2; color: white; }
+  .social-row a.instagram:hover { background: var(--primary); color: white; }
+  .social-row a.tiktok:hover { background: #010101; color: white; }
+
+  /* MAP SECTION */
+  .map-section {
+    position: relative;
+    height: 420px;
+    overflow: hidden;
+  }
+  .map-section iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    display: block;
+  }
+  .map-pin-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -100%);
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    pointer-events: none;
+    animation: pinDrop 0.6s cubic-bezier(0.34,1.56,0.64,1) both;
+  }
+  @keyframes pinDrop {
+    from { opacity: 0; transform: translate(-50%, -130%); }
+    to { opacity: 1; transform: translate(-50%, -100%); }
+  }
+  .map-pin-bubble {
+    background: var(--primary);
+    color: #fff;
+    padding: 8px 14px;
+    border-radius: 6px;
+    font-size: 1.2rem;
+    font-weight: 700;
+    white-space: nowrap;
+    box-shadow: 0 4px 18px rgba(255,36,0,0.45);
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    letter-spacing: 0.02em;
+    position: relative;
+  }
+  .map-pin-bubble::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 9px solid var(--primary);
+  }
+  .map-pin-stem {
+    width: 4px;
+    height: 22px;
+    background: linear-gradient(to bottom, var(--primary), rgba(255,36,0,0));
+    border-radius: 0 0 4px 4px;
+  }
+  .map-pin-pulse {
+    width: 18px;
+    height: 6px;
+    background: rgba(255,36,0,0.35);
+    border-radius: 50%;
+    animation: pulse 1.6s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0.35; }
+    50% { transform: scale(1.5); opacity: 0.15; }
+  }
+  .map-address-pill {
+    position: absolute;
+    bottom: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    background: white;
+    padding: 0.8rem 1.6rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.22);
+    z-index: 400;
+    white-space: nowrap;
+    pointer-events: none;
+    color: var(--primary);
+    font-size: 1.35rem;
+    font-weight: 500;
+  }
+  .map-open-btn {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: white;
+    padding: 0.8rem 1.6rem;
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--dark);
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.18);
+    transition: all 0.3s;
+    cursor: pointer;
+  }
+  .map-open-btn:hover {
+    background: var(--primary);
+    color: #fff;
+  }
+
+  /* MEDIA QUERIES FOR CONTACT PAGE */
+  @media (max-width: 860px) {
+    .contact-info-strip {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .contact-section {
+      padding: 8rem 1.2rem 4rem;
+    }
+    :global(#contactForm) {
+      padding: 2.5rem 1.5rem 2rem;
+    }
+    :global(.form-grid) {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+    .contact-header-card {
+      padding: 2.5rem 2rem;
+    }
+    .contact-header-card h2 {
+      font-size: 2rem;
+    }
+    .map-address-pill {
+      font-size: 1.15rem;
+      max-width: 90%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .contact-info-strip {
+      grid-template-columns: 1fr;
+      gap: 14px;
+      margin: 24px auto 0;
+    }
+    .info-card {
+      padding: 18px 16px;
+    }
+  }
+</style>

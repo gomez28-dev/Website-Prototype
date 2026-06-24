@@ -1,0 +1,100 @@
+---
+// src/layouts/BaseLayout.astro
+// The single layout wrapping every page — handles <html>, fonts, global CSS.
+import Header from '../components/layout/Header.astro';
+import Footer from '../components/layout/Footer.astro';
+import MobileNav from '../components/layout/MobileNav.astro';
+
+import '../styles/global.css';
+import '../styles/base.css';
+
+interface Props {
+  title: string;
+  description?: string;
+  ogImage?: string;
+}
+
+const {
+  title,
+  description = 'DOYEN Group of Companies — Premium automotive, fuel, and industrial products in the Philippines.',
+  ogImage = '/assets/images/LOGO (2).webp',
+} = Astro.props;
+
+const { pathname } = Astro.url;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:type" content="website" />
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/favicon-180x180.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/assets/images/favicon-192x192.png" />
+
+    <!-- Google Fonts: Barlow Condensed (headings) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <Header pathname={pathname} />
+    <MobileNav pathname={pathname} />
+
+    <main class="page-main">
+      <slot />
+    </main>
+
+    <Footer />
+  </body>
+</html>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const main = document.querySelector('.page-main');
+    if (main) {
+      main.style.opacity = '0';
+      main.style.transform = 'translateY(8px)';
+      requestAnimationFrame(() => {
+        main.style.transition = 'opacity 0.4s ease-out, transform 0.4s ease-out';
+        main.style.opacity = '1';
+        main.style.transform = 'translateY(0)';
+      });
+    }
+
+    document.querySelectorAll('a[href]').forEach(link => {
+      const el = link as HTMLAnchorElement;
+      if (el.hostname !== window.location.hostname) return;
+      if (el.target === '_blank') return;
+      if (el.href.includes('#')) return;
+      if (el.pathname === window.location.pathname) return;
+
+      el.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (main) {
+          main.style.transition = 'opacity 0.25s ease-in, transform 0.25s ease-in';
+          main.style.opacity = '0';
+          main.style.transform = 'translateY(8px)';
+        }
+        setTimeout(() => {
+          window.location.href = el.href;
+        }, 250);
+      });
+    });
+  });
+</script>

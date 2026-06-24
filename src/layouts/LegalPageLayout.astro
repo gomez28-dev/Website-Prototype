@@ -1,0 +1,92 @@
+---
+// src/layouts/LegalPageLayout.astro
+import BaseLayout from './BaseLayout.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description } = Astro.props;
+---
+
+<BaseLayout title={title} description={description}>
+  <section class="content-section">
+    <div class="container">
+      <div class="content-layout">
+        <slot />
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .content-section {
+    padding: 12rem 0 6rem;
+    background: #fff;
+  }
+  .content-layout {
+    max-width: 90rem;
+    margin: 0 auto;
+  }
+  
+  /* Apply typography rules for legal documents using :global() so they style slotted HTML content */
+  :global(.section-block) {
+    margin-bottom: 5rem;
+    padding-bottom: 5rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+  }
+  :global(.section-block:last-child) {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+  :global(.section-block h1) {
+    font-family: var(--font-heading);
+    font-size: 4.5rem;
+    color: var(--primary);
+    margin-bottom: 2rem;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  :global(.section-block h2) {
+    font-family: var(--font-heading);
+    font-size: 2.6rem;
+    color: var(--primary);
+    margin-bottom: 1.5rem;
+    line-height: 1.3;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  :global(.section-block p) {
+    color: #444;
+    line-height: 1.9;
+    margin-bottom: 1.5rem;
+    font-size: 1.6rem;
+  }
+  :global(.section-block ul), :global(.section-block ol) {
+    margin-bottom: 1.5rem;
+    padding-left: 2.5rem;
+  }
+  :global(.section-block li) {
+    margin-bottom: 0.8rem;
+    font-size: 1.55rem;
+    color: #444;
+    line-height: 1.7;
+  }
+  :global(.section-block strong) {
+    color: var(--dark);
+  }
+  :global(.section-number) {
+    display: inline-block;
+    background: var(--light);
+    color: var(--primary);
+    font-size: 1.2rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    padding: 0.4rem 1.2rem;
+    margin-bottom: 1.2rem;
+    text-transform: uppercase;
+  }
+</style>

@@ -1,0 +1,537 @@
+---
+// src/pages/careers/index.astro
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { jobs } from '../../data/jobs';
+---
+
+<BaseLayout
+  title="Careers – DOYEN"
+  description="Join the DOYEN team - Explore career opportunities and job openings in accounting, maintenance, operations, and logistics in the Philippines."
+>
+  <!-- HERO -->
+  <section class="career-hero">
+    <div class="career-hero-content">
+      <h1>Life at DOYEN</h1>
+      <p>Join a dynamic team where your growth matters. We are looking for passionate and dedicated people to contribute to our growing company.</p>
+    </div>
+  </section>
+
+  <!-- VALUES -->
+  <section class="values-section">
+    <div class="container">
+      <h2>Our Values</h2>
+      <p>Our company is deeply rooted in our purpose to serve and create positive impact through our products and services. Through our core values, we drive towards positive change.</p>
+      <div class="values-grid">
+        <div class="value-card">
+          <div class="value-letter">D</div>
+          <div class="value-label">Deliver results with precision</div>
+        </div>
+        <div class="value-card">
+          <div class="value-letter">O</div>
+          <div class="value-label">Outperform goals and expectations</div>
+        </div>
+        <div class="value-card">
+          <div class="value-letter">Y</div>
+          <div class="value-label">Yield integrity and accountability</div>
+        </div>
+        <div class="value-card">
+          <div class="value-letter">E</div>
+          <div class="value-label">Empower collaboration and teamwork</div>
+        </div>
+        <div class="value-card">
+          <div class="value-letter">N</div>
+          <div class="value-label">Nurture mutual respect</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- OPEN POSITIONS -->
+  <section class="job-section" id="open-positions">
+    <div class="container">
+      <h2>Open Positions</h2>
+      <p>Search by job title, department, or keyword</p>
+      
+      <div class="search-bar">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="search-icon"><circle cx="11" cy="11" r="8"/><line x1="21" x2="16.65" y1="21" y2="16.65"/></svg>
+        <input type="text" id="jobSearchInput" placeholder="Search positions..." autocomplete="off" />
+        <button id="clearSearch" aria-label="Clear search">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" x2="6" y1="6" y2="18"/><line x1="6" x2="18" y1="6" y2="18"/></svg>
+        </button>
+      </div>
+
+      <div class="job-filters">
+        <button class="filter-btn active" data-dept="all">All Departments</button>
+        <button class="filter-btn" data-dept="accounting">Accounting</button>
+        <button class="filter-btn" data-dept="maintenance">Maintenance</button>
+      </div>
+
+      <p class="results-count"><span id="resultsCount">{jobs.length}</span> positions available</p>
+      
+      <div class="jobs-grid" id="jobsGrid">
+        {jobs.map((job) => (
+          <div
+            class="job-card"
+            data-dept={job.department}
+            data-title={job.title}
+            data-keywords={job.keywords}
+          >
+            <div class="job-card-top">
+              <span class="job-dept">{job.department}</span>
+            </div>
+            <h3>{job.title}</h3>
+            
+            <div class="job-meta">
+              <span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                {job.location}
+              </span>
+              <span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10v6M12 4V2M10 2h4M4 10h16v11H4V10Z"/></svg>
+                {job.qualification}
+              </span>
+              <span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                {job.experience}
+              </span>
+            </div>
+            
+            <p class="job-desc">{job.overview}</p>
+            
+            <div class="job-card-footer">
+              <span class="job-type">{job.type}</span>
+              <a href={`/careers/${job.slug}`} class="apply-btn">
+                Apply Now
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" x2="19" y1="12" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+              </a>
+            </div>
+          </div>
+        ))}
+
+        <div class="no-results" id="noResults">
+          <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin: 0 auto 10px;"><circle cx="11" cy="11" r="8"/><line x1="21" x2="16.65" y1="21" y2="16.65"/></svg>
+          <p>No positions found. Try a different keyword or department.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-mock">
+    <h2>Ready to Join Our Team?</h2>
+    <p>Send us your resume and we'll reach out when a position matches your profile</p>
+    <div class="cta-btns">
+      <a href="/contact" class="cta-btn primary">Send Application</a>
+      <a href="/about" class="cta-btn secondary">Learn About DOYEN</a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .career-hero {
+    position: relative;
+    height: 70vh;
+    min-height: 50rem;
+    background: url('https://images.unsplash.com/photo-1497366216548-37526070297c?w=1600&q=80') center/cover no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .career-hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.55);
+    z-index: 1;
+  }
+  .career-hero-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    color: #fff;
+    padding: 2rem;
+  }
+  .career-hero-content h1 {
+    font-family: var(--font-heading);
+    font-size: 7rem;
+    font-weight: 800;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 1rem;
+  }
+  .career-hero-content p {
+    font-size: 1.8rem;
+    color: rgba(255,255,255,0.9);
+    max-width: 60rem;
+    margin: 0 auto;
+  }
+
+  /* VALUES */
+  .values-section {
+    padding: 6rem 0;
+    background: #fff;
+    text-align: center;
+  }
+  .values-section h2 {
+    font-family: var(--font-heading);
+    font-size: 5rem;
+    font-weight: 800;
+    color: #000;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+  }
+  .values-section > .container > p {
+    max-width: 80rem;
+    margin: 0 auto 4rem;
+    color: #666;
+    font-size: 1.6rem;
+  }
+  .values-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0;
+    border: 1px solid #e0e0e0;
+  }
+  .value-card {
+    padding: 2.5rem 1.5rem;
+    border-right: 1px solid #e0e0e0;
+    background: #fff;
+    transition: all 0.3s;
+    position: relative;
+  }
+  .value-card:last-child {
+    border-right: none;
+  }
+  .value-card:hover {
+    box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+    z-index: 2;
+  }
+  .value-card:hover .value-letter {
+    color: var(--primary);
+  }
+  .value-letter {
+    font-size: 7rem;
+    font-weight: 800;
+    color: #000;
+    line-height: 1;
+    font-family: var(--font-heading);
+    transition: color 0.3s;
+  }
+  .value-label {
+    font-family: var(--font-heading);
+    font-size: 1.4rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--dark);
+    margin-top: 0.5rem;
+  }
+
+  /* POSITIONS LISTING */
+  .job-section {
+    padding: 6rem 0;
+    background: #f9f9f9;
+  }
+  .job-section h2 {
+    font-family: var(--font-heading);
+    font-size: 5rem;
+    font-weight: 800;
+    color: #000;
+    text-transform: uppercase;
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+  .job-section > .container > p {
+    text-align: center;
+    color: #888;
+    margin-bottom: 3rem;
+    font-size: 1.6rem;
+  }
+
+  /* Search & Filters */
+  .search-bar {
+    display: flex;
+    gap: 1rem;
+    max-width: 70rem;
+    margin: 0 auto 2rem;
+    background: #fff;
+    border: 1px solid #ddd;
+    padding: 0.8rem 1.2rem;
+    align-items: center;
+  }
+  .search-icon {
+    color: #aaa;
+  }
+  .search-bar input {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-size: 1.5rem;
+    background: none;
+    color: var(--text);
+  }
+  .search-bar button {
+    background: none;
+    border: none;
+    color: #aaa;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    padding: 0.2rem;
+  }
+  .job-filters {
+    display: flex;
+    justify-content: center;
+    gap: 0.8rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+  }
+  .filter-btn {
+    padding: 0.6rem 1.6rem;
+    background: transparent;
+    border: 1px solid #ddd;
+    color: #888;
+    font-family: var(--font-heading);
+    font-size: 1.3rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+    border-radius: 50px;
+  }
+  .filter-btn:hover,
+  .filter-btn.active {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: #fff;
+  }
+  .results-count {
+    text-align: center;
+    color: #aaa;
+    font-size: 1.3rem;
+    margin-bottom: 2rem;
+  }
+  .results-count span {
+    color: var(--primary);
+    font-weight: 700;
+  }
+
+  /* Grid & Cards */
+  .jobs-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+  .job-card {
+    background: #fff;
+    border: 1px solid #e8eaed;
+    padding: 2.2rem;
+    transition: all 0.3s;
+    position: relative;
+  }
+  .job-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--primary);
+    transform: scaleX(0);
+    transition: transform 0.3s;
+    transform-origin: left;
+  }
+  .job-card:hover {
+    border-color: #ccc;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+  }
+  .job-card:hover::before {
+    transform: scaleX(1);
+  }
+  .job-card.hidden {
+    display: none;
+  }
+  .job-card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 0.8rem;
+  }
+  .job-dept {
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--primary);
+  }
+  .job-card h3 {
+    font-family: var(--font-heading);
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--dark);
+    text-transform: uppercase;
+    margin-bottom: 0.6rem;
+  }
+  .job-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.2rem;
+    margin-bottom: 1rem;
+  }
+  .job-meta span {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 1.25rem;
+    color: #888;
+  }
+  .job-meta svg {
+    color: var(--primary);
+  }
+  .job-desc {
+    font-size: 1.4rem;
+    color: #666;
+    line-height: 1.65;
+    margin-bottom: 1.8rem;
+  }
+  .job-card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #f0f0f0;
+    padding-top: 1.2rem;
+  }
+  .job-type {
+    font-size: 1.15rem;
+    color: #bbb;
+    font-style: italic;
+  }
+  .apply-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.5rem 1.2rem;
+    background: var(--light);
+    color: var(--primary);
+    font-family: var(--font-heading);
+    font-size: 1.4rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    transition: all 0.2s;
+    text-decoration: none;
+    border-radius: 50px;
+  }
+  .apply-btn:hover {
+    background: var(--primary);
+    color: #fff;
+  }
+  .no-results {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 4rem 0;
+    color: #bbb;
+    display: none;
+  }
+  .no-results.visible {
+    display: block;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 1024px) {
+    .values-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .values-grid .value-card:nth-child(3) {
+      border-right: none;
+    }
+    .jobs-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  @media (max-width: 600px) {
+    .values-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .values-grid .value-card:nth-child(2) {
+      border-right: none;
+    }
+    .values-grid .value-card:nth-child(3) {
+      border-right: 1px solid #e0e0e0;
+    }
+    .career-hero-content h1 {
+      font-size: 4rem;
+    }
+    .career-hero {
+      height: 50vh;
+      min-height: 35rem;
+    }
+  }
+  @media (max-width: 400px) {
+    .values-grid {
+      grid-template-columns: 1fr;
+    }
+    .value-card {
+      border-right: none;
+    }
+  }
+</style>
+
+<script>
+  (function () {
+    const cards = document.querySelectorAll('.job-card');
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const searchInput = document.getElementById('jobSearchInput') as HTMLInputElement | null;
+    const clearBtn = document.getElementById('clearSearch');
+    const resultsCount = document.getElementById('resultsCount');
+    const noResults = document.getElementById('noResults');
+    let activeDept = 'all';
+
+    function updateJobs() {
+      const keyword = searchInput ? searchInput.value.trim().toLowerCase() : '';
+      let visible = 0;
+
+      cards.forEach((card) => {
+        const dept = card.getAttribute('data-dept') || '';
+        const title = (card.getAttribute('data-title') || '').toLowerCase();
+        const keywords = (card.getAttribute('data-keywords') || '').toLowerCase();
+
+        const matchDept = activeDept === 'all' || dept === activeDept;
+        const matchSearch = !keyword || title.indexOf(keyword) !== -1 || keywords.indexOf(keyword) !== -1;
+
+        if (matchDept && matchSearch) {
+          card.classList.remove('hidden');
+          visible++;
+        } else {
+          card.classList.add('hidden');
+        }
+      });
+
+      if (resultsCount) resultsCount.textContent = visible.toString();
+      if (noResults) noResults.classList.toggle('visible', visible === 0);
+    }
+
+    filterBtns.forEach((btn) => {
+      btn.addEventListener('click', function () {
+        filterBtns.forEach((b) => b.classList.remove('active'));
+        this.classList.add('active');
+        activeDept = this.getAttribute('data-dept') || 'all';
+        updateJobs();
+      });
+    });
+
+    if (searchInput) {
+      searchInput.addEventListener('input', updateJobs);
+    }
+    
+    if (clearBtn) {
+      clearBtn.addEventListener('click', () => {
+        if (searchInput) searchInput.value = '';
+        updateJobs();
+      });
+    }
+
+    updateJobs();
+  })();
+</script>

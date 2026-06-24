@@ -1,0 +1,119 @@
+/* ============================================================
+   DOYEN Group of Companies — Global Design Tokens & Resets
+   src/styles/global.css
+   ============================================================ */
+
+:root {
+  /* Brand Colors */
+  --primary:   #FF2400;
+  --secondary: #ff6633;
+  --accent:    #f0a500;
+  --light:     #F2F7F8;
+  --dark:      #333;
+  --text:      #444;
+
+  /* Aliases used in the Hostinger version */
+  --primary-color:   #FF2400;
+  --secondary-color: #ff6633;
+  --accent-color:    #f0a500;
+  --light-color:     #F2F7F8;
+  --dark-color:      #333;
+  --text-color:      #444;
+  --teal-dark:       #cc1a00;
+  --teal-mid:        #ff2400;
+  --teal-bright:     #ff6633;
+  --teal-light:      #fff4f2;
+  --teal-border:     #c3c7c7;
+
+  /* Typography */
+  --font-heading: 'Barlow Condensed', 'Helvetica Neue', Arial, sans-serif;
+  --font-body:    Verdana, Geneva, sans-serif;
+  --font-main:    'Helvetica Neue', Arial, sans-serif;
+
+  /* Layout */
+  --container-width: 140rem;
+
+  /* Spacing Scale */
+  --sp-xs:  0.5rem;
+  --sp-sm:  1rem;
+  --sp-md:  2rem;
+  --sp-lg:  3rem;
+  --sp-xl:  5rem;
+
+  /* Aliases used in Hostinger version */
+  --spacing-xs: 0.5rem;
+  --spacing-sm: 1rem;
+  --spacing-md: 2rem;
+  --spacing-lg: 4rem;
+  --spacing-xl: 6rem;
+
+  --border-radius: 0;
+}
+
+/* ── RESETS ── */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 62.5%; /* 1rem = 10px */
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: 1.6rem;
+  line-height: 1.6;
+  color: var(--text);
+  background-color: #fff;
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
+h1, h2, h3, h4, h5 {
+  line-height: 1.3;
+  margin-bottom: var(--sp-sm);
+}
+
+a {
+  text-decoration: none;
+  color: var(--primary);
+  transition: all 0.3s;
+}
+
+a:hover {
+  color: var(--accent);
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+button {
+  cursor: pointer;
+}
+
+.event-gallery {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-top: 24px;
+}
+.event-gallery img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 8px; 
+}
+@media (max-width: 768px) {
+    .event-gallery {
+        grid-template-columns: 1fr; /* Switch to 1 column on mobile viewports */
+    }
+}

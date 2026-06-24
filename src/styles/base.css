@@ -1,0 +1,208 @@
+/* ============================================================
+   DOYEN Group of Companies — Shared Base Utilities
+   src/styles/base.css
+   Imported by BaseLayout.astro after global.css
+   ============================================================ */
+
+/* ── CONTAINER ── */
+.container {
+  width: 100%;
+  max-width: var(--container-width);
+  margin: 0 auto;
+  padding: 0 var(--sp-md);
+}
+
+/* ── BUTTONS ── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 1rem 2.5rem;
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  border-radius: 50px;
+}
+
+.btn-red {
+  background: var(--primary);
+  color: #fff;
+}
+
+.btn-red:hover {
+  background: var(--teal-dark);
+  color: #fff;
+}
+
+/* ── CTA SECTION ── */
+.cta-mock {
+  padding: 3rem;
+  background: var(--primary);
+  color: #fff;
+  text-align: center;
+}
+
+.cta-mock h2 {
+  font-family: var(--font-heading);
+  font-size: 3rem;
+  color: #fff;
+  margin-bottom: 1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.cta-mock p {
+  font-family: var(--font-body);
+  font-size: 1.4rem;
+  opacity: 0.9;
+  max-width: 60rem;
+  margin: 0 auto 2rem;
+}
+
+.cta-btns {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.cta-btn {
+  padding: 1rem 2.5rem;
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  transition: all 0.2s;
+  border-radius: 50px;
+}
+
+.cta-btn.primary {
+  background: #fff;
+  color: var(--primary);
+}
+
+.cta-btn.primary:hover {
+  background: #f0f0f0;
+  color: var(--primary);
+}
+
+.cta-btn.secondary {
+  background: transparent;
+  color: #fff;
+  border: 2px solid #fff;
+}
+
+.cta-btn.secondary:hover {
+  background: #fff;
+  color: var(--primary);
+}
+
+/* ── SECTION TITLE ── */
+.section-title {
+  font-family: var(--font-heading);
+  font-size: 3.6rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--primary);
+  text-align: center;
+  margin-bottom: var(--sp-md);
+}
+
+/* ── MOBILE CTA RESPONSIVE ── */
+@media (max-width: 768px) {
+  .cta-mock {
+    padding: 2rem 1.5rem;
+  }
+  .cta-mock h2 {
+    font-size: 2.2rem;
+  }
+  .cta-mock p {
+    font-size: 1.3rem;
+  }
+  .cta-btns {
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+  .cta-btn {
+    width: 100%;
+    max-width: 28rem;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.2rem 2rem;
+  }
+}
+
+/* ── INNER PAGE BANNER ── */
+.n-banner {
+  position: relative;
+  width: 100%;
+  height: 70vh;
+  max-height: 70vh;
+  min-height: 30rem;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.n-banner-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  z-index: 1;
+}
+
+.n-banner::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  z-index: 2;
+}
+
+.n-banner .banner-title {
+  position: relative;
+  z-index: 3;
+  padding-left: 3rem;
+}
+
+.n-banner .banner-title h1 {
+  font-family: var(--font-heading);
+  font-size: 8rem;
+  color: white;
+  font-weight: 800;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+@media (max-width: 768px) {
+  .n-banner {
+    height: 55vh;
+    min-height: 22rem;
+  }
+  .n-banner .banner-title h1 {
+    font-size: clamp(3rem, 8vw, 5rem);
+  }
+  .n-banner .banner-title {
+    padding-left: 2.5rem;
+  }
+}

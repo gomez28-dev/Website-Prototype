@@ -1,0 +1,274 @@
+---
+// src/pages/careers/[slug].astro
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ApplyForm from '../../components/careers/ApplyForm.astro';
+import { jobs } from '../../data/jobs';
+
+export async function getStaticPaths() {
+  return jobs.map((job) => ({
+    params: { slug: job.slug },
+    props: { job },
+  }));
+}
+
+const { job } = Astro.props;
+---
+
+<BaseLayout
+  title={`Apply – ${job.title} | DOYEN`}
+  description={`Apply for the ${job.title} position at the DOYEN Group of Companies. Review duties, qualifications, and submit your resume online.`}
+>
+  <main class="apply-page">
+    <div class="apply-layout">
+      <!-- Breadcrumb -->
+      <div class="breadcrumb">
+        <a href="/careers">
+          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 4px; display: inline-block; vertical-align: middle;"><line x1="19" x2="5" y1="12" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+          Back to Careers
+        </a>
+        <span>/</span>
+        <span class="current">{job.title}</span>
+      </div>
+
+      <!-- Job Description details (Left Column) -->
+      <div class="job-desc-card">
+        <div class="card-section">
+          <h3>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="7" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+            Job Overview
+          </h3>
+          <p>{job.overview}</p>
+        </div>
+
+        {job.dutySections && job.dutySections.length > 0 && (
+          <div class="card-section">
+            <h3>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="m9 12 2 2 4-4"/></svg>
+              Duties &amp; Responsibilities
+            </h3>
+            {job.dutySections.map((section) => (
+              <div class="subsection">
+                <p class="section-sub-heading">{section.heading}</p>
+                <ul class="req-list">
+                  {section.items.map((item) => (
+                    <li>{item}</li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {job.ksas && job.ksas.length > 0 && (
+          <div class="card-section">
+            <h3>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+              Knowledge, Skills &amp; Abilities
+            </h3>
+            <ul class="ksa-list">
+              {job.ksas.map((ksa) => (
+                <li>
+                  <span class="ksa-title">{ksa.title}</span>
+                  <span class="ksa-desc">{ksa.description}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        <div class="card-section">
+          <h3>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            Minimum Qualifications
+          </h3>
+          <ul class="req-list">
+            {job.qualifications.map((qual) => (
+              <li>{qual}</li>
+            ))}
+          </ul>
+        </div>
+      </div>
+
+      <!-- Apply Form Card (Right Column) -->
+      <div class="apply-form-wrapper">
+        <ApplyForm jobTitle={job.title} />
+      </div>
+    </div>
+  </main>
+
+  <section class="cta-mock">
+    <h2>Join the DOYEN Team</h2>
+    <p>Be part of a growing company that values integrity, innovation, and excellence. We look forward to hearing from you.</p>
+    <div class="cta-btns">
+      <a href="/careers" class="cta-btn primary">
+        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 6px; display: inline-block; vertical-align: middle;"><line x1="19" x2="5" y1="12" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+        View All Openings
+      </a>
+      <a href="/contact" class="cta-btn secondary">Contact Us</a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .apply-page {
+    padding-top: 10rem;
+    padding-bottom: 4rem;
+    background: #f9f9f9;
+  }
+  .apply-layout {
+    max-width: 120rem;
+    margin: 0 auto;
+    padding: 0 var(--sp-md);
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 3rem;
+    align-items: start;
+  }
+  
+  /* Breadcrumb */
+  .breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+    color: #888;
+    grid-column: 1 / -1;
+  }
+  .breadcrumb a {
+    color: #888;
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .breadcrumb a:hover {
+    color: var(--primary);
+  }
+  .breadcrumb .current {
+    color: var(--primary);
+    font-weight: 600;
+  }
+
+  /* Job Description Card */
+  .job-desc-card {
+    background: #fff;
+    border: 1px solid #e8eaed;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  }
+  .job-desc-card .card-section {
+    padding: 2.5rem;
+    border-bottom: 1px solid #f0f2f4;
+  }
+  .job-desc-card .card-section:last-child {
+    border-bottom: none;
+  }
+  .job-desc-card .card-section h3 {
+    font-family: var(--font-heading);
+    font-size: 1.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--primary);
+    margin-bottom: 1.8rem;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+  }
+  .job-desc-card .card-section h3 svg {
+    color: var(--primary);
+  }
+  .job-desc-card p {
+    font-size: 1.45rem;
+    color: #555;
+    line-height: 1.8;
+  }
+  .subsection {
+    margin-bottom: 2rem;
+  }
+  .subsection:last-of-type {
+    margin-bottom: 0;
+  }
+  
+  .section-sub-heading {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 0.8rem;
+    margin-top: 1.2rem;
+  }
+  
+  .req-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .req-list li {
+    padding: 0.6rem 0;
+    font-size: 1.4rem;
+    color: #555;
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    border-bottom: 1px solid #f0f2f4;
+    line-height: 1.6;
+  }
+  .req-list li:last-child {
+    border-bottom: none;
+  }
+  .req-list li::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    background: var(--primary);
+    border-radius: 50%;
+    margin-top: 0.7rem;
+    flex-shrink: 0;
+  }
+
+  /* KSAs */
+  .ksa-list {
+    list-style: none;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.2rem;
+    padding: 0;
+    margin: 0;
+  }
+  .ksa-list li {
+    background: #f8f9fa;
+    border: 1px solid #eee;
+    border-left: 3px solid var(--primary);
+    padding: 1.2rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+  .ksa-list li .ksa-title {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: #222;
+  }
+  .ksa-list li .ksa-desc {
+    font-size: 1.25rem;
+    color: #666;
+    line-height: 1.6;
+  }
+
+  @media (max-width: 900px) {
+    .apply-layout {
+      grid-template-columns: 1fr;
+    }
+  }
+  @media (max-width: 768px) {
+    .apply-page {
+      padding-top: 8rem;
+    }
+    .apply-layout {
+      padding: 0 var(--sp-sm);
+    }
+    .ksa-list {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

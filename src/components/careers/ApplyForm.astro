@@ -1,0 +1,343 @@
+---
+// src/components/careers/ApplyForm.astro
+interface Props {
+  jobTitle: string;
+}
+
+const { jobTitle } = Astro.props;
+---
+
+<div class="form-card">
+  <div class="form-card-header">
+    <h2>Apply Now</h2>
+    <p>Submit your application for {jobTitle}</p>
+  </div>
+  <div class="form-body">
+    <form id="applyForm">
+      <!-- Hidden input for job title to populate in the EmailJS template -->
+      <input type="hidden" name="job_title" value={jobTitle} />
+
+      <div class="form-group">
+        <label for="name">Full Name <span>*</span></label>
+        <input type="text" id="name" name="name" class="form-control" placeholder="Enter your full name" required />
+      </div>
+      
+      <div class="form-group">
+        <label for="email">Email Address <span>*</span></label>
+        <input type="email" id="email" name="email" class="form-control" placeholder="Enter your email address" required />
+      </div>
+
+      <div class="form-group">
+        <label for="phone">Phone Number <span>*</span></label>
+        <input type="tel" id="phone" name="phone" class="form-control" placeholder="09171234567" required />
+      </div>
+
+      <div class="form-group">
+        <label for="message">Message / Cover Letter</label>
+        <textarea id="message" name="message" class="form-control" placeholder="Tell us why you're a great fit for this role..."></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="resume">Upload Resume <span>*</span></label>
+        <div class="file-drop" id="fileDrop">
+          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="upload-icon"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>
+          <p id="fileDropText">Drag &amp; drop your resume here or click to browse</p>
+          <span class="file-name" id="fileName"></span>
+          <input type="file" id="resume" name="resume" accept=".pdf,.doc,.docx" required />
+        </div>
+        <p class="file-limit-hint">Accepted formats: PDF, DOC, DOCX. Max file size: 45KB (EmailJS limit).</p>
+      </div>
+
+      <button type="submit" class="submit-btn" id="submitBtn">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" x2="11" y1="2" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        Submit Application
+      </button>
+    </form>
+  </div>
+</div>
+
+<!-- Sending Overlay -->
+<div class="sending-overlay" id="sendingOverlay">
+  <div class="sending-spinner"></div>
+  <p>Sending application…</p>
+</div>
+
+<style>
+  .form-card {
+    background: #fff;
+    border: 1px solid #e8eaed;
+    overflow: hidden;
+    position: sticky;
+    top: 9rem;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  }
+  .form-card-header {
+    background: var(--primary);
+    padding: 2rem 2.5rem;
+  }
+  .form-card-header h2 {
+    font-family: var(--font-heading);
+    font-size: 2.2rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: white;
+    letter-spacing: 0.05em;
+    margin-bottom: 0;
+  }
+  .form-card-header p {
+    font-size: 1.3rem;
+    color: rgba(255, 255, 255, 0.75);
+    margin-top: 0.3rem;
+  }
+  .form-body {
+    padding: 2.5rem;
+    background: #fff;
+  }
+  .form-group {
+    margin-bottom: 1.8rem;
+  }
+  .form-group label {
+    display: block;
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #555;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 0.7rem;
+  }
+  .form-group label span {
+    color: var(--primary);
+  }
+  .form-control {
+    width: 100%;
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    color: #333;
+    font-size: 1.4rem;
+    font-family: var(--font-body);
+    padding: 0.9rem 1.2rem;
+    outline: none;
+    transition: border-color 0.2s, background 0.2s;
+    border-radius: 0;
+  }
+  .form-control:focus {
+    border-color: var(--primary);
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(255, 36, 0, 0.08);
+  }
+  textarea.form-control {
+    resize: vertical;
+    min-height: 10rem;
+  }
+  .file-drop {
+    border: 2px dashed #dee2e6;
+    padding: 2rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+    background: #f8f9fa;
+  }
+  .file-drop:hover,
+  .file-drop.dragover {
+    border-color: var(--primary);
+    background: rgba(255, 36, 0, 0.04);
+  }
+  .upload-icon {
+    color: #bbb;
+    margin: 0 auto 0.8rem;
+    display: block;
+  }
+  .file-drop p {
+    font-size: 1.3rem;
+    color: #888;
+    margin-bottom: 0;
+  }
+  .file-drop .file-name {
+    font-size: 1.3rem;
+    color: var(--secondary);
+    margin-top: 0.5rem;
+    display: none;
+    font-weight: 600;
+  }
+  .file-drop input[type='file'] {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    cursor: pointer;
+  }
+  .file-limit-hint {
+    font-size: 1.1rem;
+    color: #aaa;
+    margin-top: 0.5rem;
+    margin-bottom: 0;
+  }
+  .submit-btn {
+    width: 100%;
+    padding: 1.4rem;
+    background: var(--light);
+    color: var(--primary);
+    border: none;
+    font-family: var(--font-heading);
+    font-size: 1.7rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    border-radius: 0;
+  }
+  .submit-btn:hover {
+    background: var(--primary);
+    color: white;
+  }
+
+  /* Sending Overlay */
+  .sending-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 1.4rem;
+  }
+  .sending-overlay.active {
+    display: flex;
+  }
+  .sending-spinner {
+    width: 52px;
+    height: 52px;
+    border: 5px solid rgba(255, 255, 255, 0.3);
+    border-top-color: var(--primary);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+  .sending-overlay p {
+    color: #fff;
+    font-size: 1.6rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+  }
+
+  @media (max-width: 900px) {
+    .form-card {
+      position: static;
+      margin-top: 3rem;
+    }
+  }
+</style>
+
+<script>
+  import emailjs from '@emailjs/browser';
+
+  const EMAILJS_PUBLIC_KEY = 'eKyGjQqzlwi8gVTW7';
+  const EMAILJS_SERVICE_ID = 'service_5wed65w';
+  const EMAILJS_TEMPLATE_ID = 'template_apply';
+
+  // Initialize EmailJS
+  emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+
+  (function () {
+    const form = document.getElementById('applyForm') as HTMLFormElement | null;
+    const dropZone = document.getElementById('fileDrop');
+    const fileInput = document.getElementById('resume') as HTMLInputElement | null;
+    const fileName = document.getElementById('fileName');
+    const fileText = document.getElementById('fileDropText');
+    const overlay = document.getElementById('sendingOverlay');
+
+    if (!form || !fileInput || !dropZone || !fileName || !fileText || !overlay) return;
+
+    function handleFile(file: File) {
+      // Validate file size: limit is 45KB (46080 bytes)
+      const maxBytes = 45 * 1024;
+      if (file.size > maxBytes) {
+        alert(
+          `File size is too large (${(file.size / 1024).toFixed(1)}KB).\n` +
+          'EmailJS free tier has a strict attachment limit. Please upload a resume smaller than 45KB,\n' +
+          'or email your CV directly to hr@doyenph.com with the subject line including the job title.'
+        );
+        fileInput!.value = ''; // clear input
+        fileName!.style.display = 'none';
+        fileText!.style.display = 'block';
+        return;
+      }
+
+      fileName!.textContent = file.name;
+      fileName!.style.display = 'block';
+      fileText!.style.display = 'none';
+    }
+
+    fileInput.addEventListener('change', function () {
+      if (fileInput.files && fileInput.files.length > 0) {
+        handleFile(fileInput.files[0]);
+      }
+    });
+
+    dropZone.addEventListener('dragover', function (e) {
+      e.preventDefault();
+      dropZone.classList.add('dragover');
+    });
+
+    dropZone.addEventListener('dragleave', function () {
+      dropZone.classList.remove('dragover');
+    });
+
+    dropZone.addEventListener('drop', function (e) {
+      e.preventDefault();
+      dropZone.classList.remove('dragover');
+      if (e.dataTransfer && e.dataTransfer.files.length > 0) {
+        const file = e.dataTransfer.files[0];
+        // Assign file to input
+        fileInput.files = e.dataTransfer.files;
+        handleFile(file);
+      }
+    });
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      // Final validation
+      if (!fileInput.files || fileInput.files.length === 0) {
+        alert('Please upload your resume to submit the application.');
+        return;
+      }
+
+      const file = fileInput.files[0];
+      if (file.size > 45 * 1024) {
+        alert('Please reduce your resume file size below 45KB or email hr@doyenph.com directly.');
+        return;
+      }
+
+      overlay.classList.add('active');
+
+      // Use emailjs.sendForm to submit the actual form containing the file
+      emailjs
+        .sendForm(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, form)
+        .then(() => {
+          overlay.classList.remove('active');
+          alert('Your application has been successfully submitted! Thank you.');
+          form.reset();
+          fileName!.style.display = 'none';
+          fileText!.style.display = 'block';
+        })
+        .catch((error) => {
+          overlay.classList.remove('active');
+          alert(
+            'Something went wrong during submission.\n' +
+            'Please try again, or email your CV directly to hr@doyenph.com'
+          );
+          console.error('EmailJS Apply form submission error:', error);
+        });
+    });
+  })();
+</script>

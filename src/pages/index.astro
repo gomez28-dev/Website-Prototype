@@ -1,0 +1,253 @@
+---
+// src/pages/index.astro
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Home – DOYEN Group of Companies"
+  description="DOYEN is a leading supplier of premium tires, batteries, fuel products, and Sinotruk vehicles for automotive and industrial needs in the Philippines."
+>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-video-fallback"></div>
+    <video
+      class="hero-video"
+      autoplay
+      muted
+      loop
+      playsinline
+      preload="auto"
+      aria-hidden="true"
+    >
+      <source src="/assets/videos/bannervideoo.mp4" type="video/mp4" />
+    </video>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <h1 class="hero-title">Engineered to Fuel the Future</h1>
+      <p class="hero-subtitle">Your Central Hub for Industrial and Commercial Essentials</p>
+      <a href="/products" class="btn btn-red">View Products</a>
+    </div>
+  </section>
+
+  <!-- FEATURED PRODUCTS -->
+  <section class="featured-section">
+    <div class="container">
+      <h2 class="section-title">FEATURED PRODUCTS</h2>
+      <p class="welcome-text">
+        We are authorized distributor of major international automotive brands in the Philippines
+        for your industrial and commercial essentials engineered to last.
+      </p>
+      <table class="products-table">
+        <tbody>
+          <tr>
+            <td>
+              <a href="/products" class="product-cell-inner">
+                <img
+                  src="/assets/images/Automotive Products.webp"
+                  alt="Automotive Products"
+                  loading="lazy"
+                />
+                <div class="product-cell-label">
+                  <div class="product-cell-sub">Tires &amp; Battery</div>
+                  <strong>Automotive Products</strong>
+                </div>
+              </a>
+            </td>
+            <td>
+              <a href="/products" class="product-cell-inner">
+                <img
+                  src="/assets/images/Equipment &amp; Vehicles.webp"
+                  alt="Equipment &amp; Vehicles"
+                  loading="lazy"
+                />
+                <div class="product-cell-label">
+                  <div class="product-cell-sub">Trucks</div>
+                  <strong>Equipment &amp; Vehicles</strong>
+                </div>
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ABOUT TEASER -->
+  <section class="about-section">
+    <div class="container">
+      <h2 class="section-title">ABOUT US</h2>
+      <p>
+        The <strong>Doyen Group of Companies</strong> emerged from humble beginnings, founded by a
+        young entrepreneur, Mr. Dean Lee. In his early career in the mining sector, he immersed
+        himself in the complexities of shipments and vessel operations. It was here, amidst the
+        heavy machinery and the constant flow of goods, that he saw the backbone of the economy.
+      </p>
+      <a href="/about#who-we-are" class="btn btn-red">Read Our Story</a>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-mock">
+    <h2>Need Help Finding the Right Product?</h2>
+    <p>Contact our team for expert advice and personalized product recommendations for your specific needs</p>
+    <div class="cta-btns">
+      <a href="/contact" class="cta-btn primary">Contact Us</a>
+      <a href="/products" class="cta-btn secondary">View Products</a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* HERO */
+  .hero {
+    position: relative;
+    height: 100vh;
+    min-height: 60rem;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .hero-video-fallback {
+    position: absolute;
+    inset: 0;
+    background: #1a1a1a;
+    z-index: 0;
+  }
+  .hero-video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  }
+  .hero-video.loaded { opacity: 1; }
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.48);
+    z-index: 2;
+  }
+  .hero-content {
+    position: relative;
+    z-index: 3;
+    text-align: center;
+    color: #fff;
+    padding: 2rem;
+    max-width: 80rem;
+  }
+  .hero-title {
+    font-family: var(--font-heading);
+    font-size: clamp(4rem, 8vw, 7.5rem);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #fff;
+    margin-bottom: 1.5rem;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  }
+  .hero-subtitle {
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    color: rgba(255,255,255,0.88);
+    margin-bottom: 3rem;
+  }
+
+  /* FEATURED */
+  .featured-section {
+    padding: var(--sp-xl) 0;
+    background: #fff;
+  }
+  .welcome-text {
+    text-align: center;
+    font-size: 1.75rem;
+    color: var(--text);
+    max-width: 80rem;
+    margin: 0 auto var(--sp-lg);
+    line-height: 1.7;
+  }
+  .products-table { width: 100%; border-collapse: collapse; }
+  .products-table td { width: 50%; padding: 0; }
+  .product-cell-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    position: relative;
+    overflow: hidden;
+    min-height: 30rem;
+    transition: transform 0.3s;
+  }
+  .product-cell-inner:hover { transform: scale(1.02); }
+  .product-cell-inner img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+  }
+  .product-cell-inner:hover img { transform: scale(1.05); }
+  .product-cell-label {
+    position: relative;
+    z-index: 2;
+    background: rgba(0,0,0,0.6);
+    color: #fff;
+    width: 100%;
+    padding: 1.5rem 2rem;
+  }
+  .product-cell-sub {
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--secondary);
+    margin-bottom: 0.3rem;
+  }
+  .product-cell-label strong {
+    font-family: var(--font-heading);
+    font-size: clamp(1.4rem, 3vw, 1.8rem);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  /* ABOUT */
+  .about-section {
+    padding: var(--sp-xl) 0;
+    background: var(--light);
+    text-align: center;
+  }
+  .about-section p {
+    font-size: 1.75rem;
+    color: var(--text);
+    max-width: 80rem;
+    margin: 0 auto var(--sp-lg);
+    line-height: 1.7;
+  }
+
+  @media (max-width: 768px) {
+    .welcome-text { font-size: clamp(1.4rem, 3.5vw, 1.75rem); padding: 0 1rem; }
+    .product-cell-inner { min-height: 20rem; }
+    .about-section p { font-size: clamp(1.4rem, 3.5vw, 1.75rem); padding: 0 0.5rem; }
+    .products-table,
+    .products-table tbody,
+    .products-table tr,
+    .products-table td {
+      display: block;
+      width: 100%;
+    }
+  }
+  @media (max-width: 380px) {
+    .product-cell-inner { min-height: 16rem; }
+  }
+</style>
+
+<script>
+  const heroVideo = document.querySelector('.hero-video') as HTMLVideoElement | null;
+  if (heroVideo) {
+    heroVideo.addEventListener('canplay', () => heroVideo.classList.add('loaded'));
+    if (heroVideo.readyState >= 3) heroVideo.classList.add('loaded');
+  }
+</script>

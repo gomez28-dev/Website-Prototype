@@ -1,0 +1,264 @@
+---
+// src/components/layout/Header.astro
+// Server-rendered header — no JS injection, no string concatenation, no basePath hack.
+// Active page highlight via Astro.url.pathname passed from BaseLayout.
+
+interface Props {
+  pathname: string;
+}
+
+const { pathname } = Astro.props;
+
+function isActive(href: string): boolean {
+  if (href === '/') return pathname === '/' || pathname === '';
+  return pathname.startsWith(href);
+}
+---
+
+<header id="header">
+  <div class="header-container">
+    <div class="logo-area">
+      <a href="/">
+        <img
+          src="/assets/images/lateslogo(1)(1)(1).webp"
+          alt="DOYEN Group of Companies"
+          class="logo-img"
+        />
+      </a>
+    </div>
+
+    <div class="header-nav-area">
+      <ul class="nav-menu">
+        <li>
+          <a href="/" id="nav-home" class:list={[{ active: isActive('/') && pathname === '/' }]}>
+            Home
+          </a>
+        </li>
+        <li class="has-dropdown">
+          <a href="/about" id="nav-about" class:list={[{ active: isActive('/about') }]}>
+            About Us
+          </a>
+          <div class="dropdown">
+            <a href="/about#who-we-are">Who We Are</a>
+            <a href="/about#our-journey">Our Journey</a>
+            <a href="/about#our-story">Our Story</a>
+            <a href="/about#mission-vision">Mission &amp; Vision</a>
+            <a href="/about#why-partner">Why Partner With Us</a>
+            <a href="/about#our-facilities">Our Facilities</a>
+          </div>
+        </li>
+        <li>
+          <a href="/products" id="nav-products" class:list={[{ active: isActive('/products') }]}>
+            Products
+          </a>
+        </li>
+        <li>
+          <a href="/news" id="nav-news" class:list={[{ active: isActive('/news') }]}>
+            Events
+          </a>
+        </li>
+        <li>
+          <a href="/careers" id="nav-career" class:list={[{ active: isActive('/careers') }]}>
+            Careers
+          </a>
+        </li>
+        <li>
+          <a href="/contact" id="nav-contact" class:list={[{ active: isActive('/contact') }]}>
+            Contact Us
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Mobile hamburger button — toggled by MobileNav.astro script -->
+    <button class="mobile-menu-btn" aria-label="Toggle navigation menu" id="mobileMenuBtn">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <line x1="4" x2="20" y1="6" y2="6"/>
+        <line x1="4" x2="20" y1="12" y2="12"/>
+        <line x1="4" x2="20" y1="18" y2="18"/>
+      </svg>
+    </button>
+  </div>
+</header>
+
+<style>
+  header {
+    background: transparent;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    transition: transform 0.35s ease;
+  }
+
+  header.hide {
+    transform: translateY(-100%);
+  }
+
+  header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0) 100%);
+    pointer-events: none;
+  }
+
+  .header-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 3rem;
+    max-width: 100%;
+    width: 100%;
+    height: 7rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .logo-area {
+    display: flex;
+    align-items: center;
+    gap: 1.4rem;
+    flex-shrink: 0;
+  }
+
+  .logo-area a {
+    display: flex;
+    align-items: center;
+  }
+
+  .logo-img {
+    height: 35px;
+    width: auto;
+    filter: brightness(1.4) contrast(1.2);
+  }
+
+  .header-nav-area {
+    display: flex;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+  }
+
+  .nav-menu {
+    display: flex;
+    list-style: none;
+    height: 7rem;
+    align-items: stretch;
+  }
+
+  .nav-menu li {
+    position: relative;
+    display: flex;
+    align-items: stretch;
+  }
+
+  .nav-menu li a {
+    font-family: Verdana, Arial, sans-serif;
+    font-size: 1.45rem;
+    text-transform: uppercase;
+    color: #fff;
+    padding: 0 1.8rem;
+    display: flex;
+    align-items: center;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+    box-shadow: inset 0 -3px 0 transparent;
+    transition: box-shadow 0.2s, color 0.2s;
+  }
+
+  .nav-menu li a:hover {
+    color: var(--primary);
+  }
+
+  .nav-menu li a.active {
+    color: var(--primary);
+    box-shadow: inset 0 -3px 0 var(--primary);
+  }
+
+  .nav-menu li.has-dropdown > a::after {
+    content: ' ▾';
+    font-size: 1.1rem;
+    margin-left: 0.4rem;
+    opacity: 0.85;
+  }
+
+  /* Dropdown */
+  .dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: #fff;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+    min-width: 20rem;
+    display: none;
+    z-index: 100;
+    border-top: 3px solid var(--primary);
+  }
+
+  .dropdown a {
+    color: #333 !important;
+    padding: 1.3rem 1.8rem !important;
+    text-transform: capitalize !important;
+    font-size: 1.4rem !important;
+    font-weight: 500 !important;
+    display: block;
+    background: none !important;
+    transition: background 0.2s, color 0.2s;
+    box-shadow: none !important;
+  }
+
+  .dropdown a:hover {
+    background: #dcdcdc !important;
+    color: var(--primary) !important;
+  }
+
+  .nav-menu li:hover .dropdown {
+    display: block;
+  }
+
+  /* Mobile hamburger */
+  .mobile-menu-btn {
+    display: none;
+    background: none;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    padding: 0.4rem;
+  }
+
+  .mobile-menu-btn svg {
+    width: 2.4rem;
+    height: 2.4rem;
+  }
+
+  /* Scroll hide/show — driven by inline script below */
+  @media (max-width: 768px) {
+    .header-nav-area { display: none; }
+    .mobile-menu-btn { display: block; }
+  }
+
+  @media (max-width: 480px) {
+    .header-container { padding: 0 1.2rem; }
+    .logo-img { height: 28px; }
+  }
+</style>
+
+<script>
+  // Scroll hide/show header
+  const header = document.getElementById('header');
+  if (header) {
+    let lastY = window.scrollY;
+    window.addEventListener('scroll', () => {
+      const currentY = window.scrollY;
+      if (currentY > lastY && currentY > 80) {
+        header.classList.add('hide');
+      } else {
+        header.classList.remove('hide');
+      }
+      lastY = currentY;
+    }, { passive: true });
+  }
+</script>
