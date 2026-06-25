@@ -362,13 +362,14 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     pointer-events: none;
   }
   .journey-section-label {
-    position: relative;
-    top: unset;
-    left: unset;
-    transform: none;
+    position: absolute;
+    top: 3.5rem;
+    left: 50%;
+    transform: translateX(-50%);
     z-index: 10;
     text-align: center;
-    padding: 5rem 2rem 2rem;
+    pointer-events: none;
+    width: 90%;
   }
   .journey-section-label h2 {
     font-size: 1.6rem;
@@ -382,7 +383,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     z-index: 10;
     text-align: center;
     padding: 0 4rem;
-    margin-bottom: 3rem;
+    max-width: var(--container-width);
+    margin: 6rem auto 0 auto;
+    pointer-events: none;
+    flex: unset;
+    margin-bottom: unset;
   }
   .journey-super {
     font-size: 1.3rem;
