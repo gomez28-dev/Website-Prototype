@@ -1,43 +1,45 @@
-# Astro Starter Kit: Minimal
+# DOYEN Group of Companies
+
+Corporate website for **DOYEN Group of Companies** — a Philippine diversified industrial conglomerate supplying tires, batteries, fuel, tanks, dispensers, LPG, and Sinotruk heavy-duty trucks.
+
+🔗 **Live site:** [https://doyen-astro.netlify.app](https://doyen-astro.netlify.app)
+
+---
+
+### What is this?
+
+A full corporate website with a product catalog, company history with interactive timeline, contact form with EmailJS integration, careers portal with job applications, news/CSR articles, FAQ, and legal pages.
+
+### How do I see it?
 
 ```sh
-npm create astro@latest -- --template minimal
+npm install
+npm run dev        # local dev at localhost:4321
+npm run build      # static production build to dist/
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+### What was it built with?
 
-## 🚀 Project Structure
+| Layer | Tech |
+|---|---|
+| Framework | Astro 7 (static SSG) |
+| Interactive UI | React 19 islands |
+| Styling | Vanilla CSS + custom properties |
+| Fonts | Barlow Condensed + Verdana |
+| Icons | Lucide React |
+| Content | Astro Content Collections (MDX) |
+| Forms | EmailJS |
+| SEO | @astrojs/sitemap |
+| Deployed | Netlify |
 
-Inside of your Astro project, you'll see the following folders and files:
+### Project structure
 
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
 ```
-
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
-
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
-
-Any static assets, like images, can be placed in the `public/` directory.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+src/
+├── pages/          home, about, products, contact, faq, news, careers, legal
+├── components/     Header, Footer, MobileNav, ProductCatalog, ContactForm, ApplyForm
+├── layouts/        BaseLayout, LegalPageLayout
+├── content/        News articles (MDX)
+├── data/           Products, jobs, countries (static TS data)
+└── styles/         global.css, base.css
+```
