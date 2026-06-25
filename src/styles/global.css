@@ -26,8 +26,8 @@
   --teal-border:     #c3c7c7;
 
   /* Typography */
-  --font-heading: 'Barlow Condensed', 'Helvetica Neue', Arial, sans-serif;
-  --font-body:    Verdana, Geneva, sans-serif;
+  --font-heading: 'Montserrat', sans-serif;
+  --font-body:    'Montserrat', sans-serif;
 
   /* Layout */
   --container-width: 140rem;
