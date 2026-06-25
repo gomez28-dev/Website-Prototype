@@ -44,25 +44,21 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   <!-- OUR JOURNEY -->
   <section id="our-journey" class="journey-section">
     <div class="journey-bg-wrapper">
-      <div class="journey-bg-a" id="journeyBgA"></div>
-      <div class="journey-bg-b" id="journeyBgB"></div>
-      <div class="journey-dark-overlay"></div>
-    </div>
-    <div class="journey-section-label">
-      <h2>AMAZING DEVELOPMENT ROAD, WE'VE GONE THROUGH</h2>
-    </div>
-    <div class="journey-header">
-      <p class="journey-super" id="journeySuper"></p>
-      <h2 class="journey-year-display" id="journeyYear"></h2>
-      <h3 class="journey-title-display" id="journeyTitle"></h3>
-      <p class="journey-desc-display" id="journeyDesc"></p>
-    </div>
-    <div class="journey-timeline-bar">
-      <button class="journey-arrow prev" id="journeyPrev" aria-label="Previous milestone">&#8592;</button>
-      <div class="journey-tl-track" id="journeyTlTrack"></div>
-      <button class="journey-arrow next" id="journeyNext" aria-label="Next milestone">&#8594;</button>
-    </div>
-  </section>
+      <div class="journey-section-label">
+        <h2>AMAZING DEVELOPMENT ROAD, WE'VE GONE THROUGH</h2>
+      </div>
+      <div class="journey-header">
+        <p class="journey-super" id="journeySuper"></p>
+        <h2 class="journey-year-display" id="journeyYear"></h2>
+        <h3 class="journey-title-display" id="journeyTitle"></h3>
+        <p class="journey-desc-display" id="journeyDesc"></p>
+      </div>
+      <div class="journey-timeline-bar">
+        <button class="journey-arrow prev" id="journeyPrev" aria-label="Previous milestone">&#8592;</button>
+        <div class="journey-tl-track" id="journeyTlTrack"></div>
+        <button class="journey-arrow next" id="journeyNext" aria-label="Next milestone">&#8594;</button>
+      </div>
+    </section>
 
   <!-- OUR STORY -->
   <section id="our-story" class="section">
@@ -337,15 +333,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   /* JOURNEY SECTION */
   .journey-section {
     position: relative;
-    padding: 0;
-    height: 75vh;
-    min-height: 55rem;
-    max-height: 65rem;
+    height: auto;
+    min-height: unset;
+    max-height: unset;
     overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    display: block;
   }
   .journey-bg-wrapper {
     position: absolute;
@@ -370,14 +362,13 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     pointer-events: none;
   }
   .journey-section-label {
-    position: absolute;
-    top: 3.5rem;
-    left: 50%;
-    transform: translateX(-50%);
+    position: relative;
+    top: unset;
+    left: unset;
+    transform: none;
     z-index: 10;
     text-align: center;
-    pointer-events: none;
-    width: 90%;
+    padding: 5rem 2rem 2rem;
   }
   .journey-section-label h2 {
     font-size: 1.6rem;
@@ -391,13 +382,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     z-index: 10;
     text-align: center;
     padding: 0 4rem;
-    pointer-events: none;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 1.2rem;
+    margin-bottom: 3rem;
   }
   .journey-super {
     font-size: 1.3rem;
@@ -421,12 +406,14 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     font-weight: 700;
     color: #fff;
     text-transform: uppercase;
+    margin-top: 1rem;
   }
   .journey-desc-display {
     font-size: clamp(1.4rem, 1.8vw, 1.8rem);
     color: rgba(255, 255, 255, 0.98);
     max-width: 65rem;
     line-height: 1.75;
+    margin: 1.5rem auto 0;
   }
   .journey-timeline-bar {
     position: relative;
@@ -435,7 +422,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0 4rem 4rem;
+    padding: 0 4rem 6rem;
   }
   .journey-arrow {
     background: none;
@@ -464,6 +451,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     position: relative;
   }
   .journey-tl-track::before {
+    content: '';
     content: '';
     position: absolute;
     top: 50%;
