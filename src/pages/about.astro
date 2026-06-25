@@ -37,9 +37,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
             <img src="/assets/images/ownerrrrr.webp" alt="Doyen Group Owner" />
           </div>
         </div>
-        <button class="wwa-arrow-btn" id="wwaArrowBtn" aria-label="View image" title="View photo">
-          <span class="arrow-hint">View</span>
-        </button>
       </div>
     </div>
   </section>
@@ -256,10 +253,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     flex: 0 0 60%;
     max-width: 60%;
     z-index: 2;
-    padding: 0 5rem;
+    padding: 0 5rem 0 8rem;
     box-sizing: border-box;
-    transform: translateX(33.33%);
-    transition: transform 0.7s cubic-bezier(0.77, 0, 0.18, 1), padding 0.7s cubic-bezier(0.77, 0, 0.18, 1);
   }
   .wwa-eyebrow {
     font-size: 1.8rem;
@@ -283,8 +278,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     width: 4.8rem;
     height: 3px;
     background: var(--primary);
-    margin: 0 auto 2.6rem;
-    transition: margin 0.7s cubic-bezier(0.77, 0, 0.18, 1);
+    margin: 0 0 2.6rem 0;
   }
   .wwa-body {
     font-size: 1.75rem;
@@ -293,9 +287,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     margin-bottom: 2.2rem;
   }
   .wwa-image-col {
-    flex: 0 0 0%;
-    max-width: 0%;
-    overflow: hidden;
+    flex: 0 0 40%;
+    max-width: 40%;
     align-self: stretch;
     display: flex;
     align-items: center;
@@ -314,107 +307,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     object-fit: cover;
   }
 
-  /* Revealed states for drawer slider */
-  .wwa-section.revealed .wwa-content {
-    transform: translateX(0%);
-    padding: 0 5rem 0 8rem;
-  }
-  .wwa-section.revealed .wwa-image-col {
-    flex: 0 0 40%;
-    max-width: 40%;
-  }
   .wwa-content .wwa-text-inner {
     display: block;
-    text-align: center;
-    transition: text-align 0.7s cubic-bezier(0.77, 0, 0.18, 1);
-  }
-  .wwa-section.revealed .wwa-content .wwa-text-inner {
     text-align: left;
-  }
-  .wwa-section.revealed .wwa-divider {
-    margin: 0 0 2.6rem 0;
-  }
-
-  /* View Drawer Button */
-  .wwa-arrow-btn {
-    position: absolute;
-    right: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 4.4rem;
-    height: 9rem;
-    background: rgba(0, 0, 0, 0);
-    border: none;
-    cursor: pointer;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 0.6rem;
-    z-index: 20;
-    transition: background 0.25s, transform 0.25s;
-  }
-  .wwa-arrow-btn:hover {
-    transform: translateY(-50%) scale(1.05);
-  }
-  .wwa-arrow-btn::before {
-    content: '→';
-    font-size: 2.5rem;
-    color: #000;
-    transition: transform 0.4s ease;
-    line-height: 1;
-    display: inline-block;
-  }
-  .wwa-section.revealed .wwa-arrow-btn::before {
-    transform: rotate(180deg);
-  }
-  .wwa-arrow-btn .arrow-hint {
-    font-size: 1rem;
-    color: var(--primary);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    writing-mode: vertical-rl;
-    transition: opacity 0.3s;
-    font-family: var(--font-heading);
-    font-weight: 700;
-  }
-  .wwa-section.revealed .wwa-arrow-btn .arrow-hint {
-    opacity: 0;
-  }
-
-  /* Animation Classes */
-  .wwa-image-col.sliding-in {
-    flex: 0 0 40% !important;
-    max-width: 40% !important;
-    animation: expandCol 0.65s cubic-bezier(0.77, 0, 0.18, 1) forwards;
-  }
-  .wwa-image-col.sliding-in .wwa-image-frame {
-    animation: slideInFromRight 0.65s cubic-bezier(0.77, 0, 0.18, 1) forwards;
-  }
-  .wwa-image-col.sliding-out {
-    flex: 0 0 40% !important;
-    max-width: 40% !important;
-    animation: collapseCol 0.55s cubic-bezier(0.55, 0, 1, 0.45) forwards;
-  }
-  .wwa-image-col.sliding-out .wwa-image-frame {
-    animation: slideOutToRight 0.55s cubic-bezier(0.55, 0, 1, 0.45) forwards;
-  }
-
-  @keyframes slideInFromRight {
-    0% { transform: translateX(110%); opacity: 0; }
-    100% { transform: translateX(0); opacity: 1; }
-  }
-  @keyframes slideOutToRight {
-    0% { transform: translateX(0); opacity: 1; }
-    100% { transform: translateX(110%); opacity: 0; }
-  }
-  @keyframes expandCol {
-    0% { flex: 0 0 0%; max-width: 0%; }
-    100% { flex: 0 0 40%; max-width: 40%; }
-  }
-  @keyframes collapseCol {
-    0% { flex: 0 0 40%; max-width: 40%; }
-    100% { flex: 0 0 0%; max-width: 0%; }
   }
 
   /* OUR STORY */
@@ -808,9 +703,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     .wwa-image-frame {
       min-height: 35rem;
     }
-    .wwa-arrow-btn {
-      display: none;
-    }
     .facilities-grid {
       grid-template-columns: repeat(2, 1fr);
     }
@@ -896,104 +788,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 </style>
 
 <script>
-  // WHO WE ARE DRAWER SLIDER
-  (function () {
-    const section = document.getElementById('wwaSection');
-    const arrowBtn = document.getElementById('wwaArrowBtn');
-    const imageCol = document.getElementById('wwaImageCol');
-    if (!section || !arrowBtn || !imageCol) return;
-
-    const textInner = section.querySelector('.wwa-text-inner') as HTMLElement | null;
-    if (!textInner) return;
-
-    let leaveTimer: any = null;
-    let isRevealed = false;
-    let isAnimating = false;
-    const REVEAL_DUR = 650;
-    const HIDE_DUR = 550;
-
-    function switchAlign(toLeft: boolean) {
-      if (!textInner) return;
-      textInner.style.transition = 'opacity 0.2s ease';
-      textInner.style.opacity = '0';
-      setTimeout(() => {
-        textInner.style.textAlign = toLeft ? 'left' : 'center';
-        textInner.style.transition = 'opacity 0.3s ease';
-        textInner.style.opacity = '1';
-      }, 220);
-    }
-
-    function reveal() {
-      clearTimeout(leaveTimer);
-      if (isRevealed || isAnimating) return;
-      isRevealed = true;
-      isAnimating = true;
-      imageCol!.classList.remove('sliding-out');
-      void imageCol!.offsetWidth; // trigger reflow
-      imageCol!.classList.add('sliding-in');
-      section!.classList.add('revealed');
-      switchAlign(true);
-      setTimeout(() => {
-        imageCol!.classList.remove('sliding-in');
-        isAnimating = false;
-      }, REVEAL_DUR);
-    }
-
-    function hide() {
-      if (!isRevealed || isAnimating) return;
-      isRevealed = false;
-      isAnimating = true;
-      imageCol!.classList.remove('sliding-in');
-      void imageCol!.offsetWidth; // trigger reflow
-      imageCol!.classList.add('sliding-out');
-      section!.classList.remove('revealed');
-      switchAlign(false);
-      setTimeout(() => {
-        imageCol!.classList.remove('sliding-out');
-        isAnimating = false;
-      }, HIDE_DUR);
-    }
-
-    function scheduleHide() {
-      leaveTimer = setTimeout(hide, 120);
-    }
-
-    arrowBtn.addEventListener('mouseenter', reveal);
-    arrowBtn.addEventListener('mouseleave', scheduleHide);
-    imageCol.addEventListener('mouseenter', () => {
-      clearTimeout(leaveTimer);
-    });
-    imageCol.addEventListener('mouseleave', scheduleHide);
-
-    // Touch support
-    let touchStartX = 0;
-    imageCol.addEventListener('touchstart', (e) => {
-      touchStartX = e.touches[0].clientX;
-    }, { passive: true });
-    imageCol.addEventListener('touchend', (e) => {
-      if (e.changedTouches[0].clientX - touchStartX > 60) {
-        clearTimeout(leaveTimer);
-        hide();
-      }
-    }, { passive: true });
-
-    // Mouse drag support
-    let mouseStartX = 0;
-    let isDragging = false;
-    imageCol.addEventListener('mousedown', (e) => {
-      mouseStartX = e.clientX;
-      isDragging = true;
-    });
-    window.addEventListener('mouseup', (e) => {
-      if (!isDragging) return;
-      isDragging = false;
-      if (e.clientX - mouseStartX > 80) {
-        clearTimeout(leaveTimer);
-        hide();
-      }
-    });
-  })();
-
   // JOURNEY TIMELINE
   (function () {
     const MILESTONES = [
