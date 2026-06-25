@@ -391,36 +391,14 @@ import ProductCatalog from '../components/catalog/ProductCatalog';
     to { opacity: 1; transform: translateY(0); } 
   }
 
-  /* PRODUCT DETAIL MODAL */
-  .detail-overlay { 
-    position: fixed; 
-    inset: 0; 
-    z-index: 2000; 
-    background: rgba(0,0,0,0.65); 
-    display: flex; 
-    align-items: flex-start; 
-    justify-content: center; 
-    padding: 8rem 2rem 4rem; 
-    overflow-y: auto; 
-    opacity: 0; 
-    pointer-events: none; 
-    transition: opacity 0.3s; 
-  }
-  .detail-overlay.active { 
-    opacity: 1; 
-    pointer-events: all; 
-  }
-  .detail-modal { 
-    background: #fff; 
-    width: 100%; 
-    max-width: 120rem; 
+  /* PRODUCT DETAIL FULL-PAGE TAKEOVER */
+  .detail-view { 
+    background: white; 
     overflow: hidden; 
-    transform: translateY(30px); 
-    transition: transform 0.35s cubic-bezier(.22,.68,0,1.2); 
-    box-shadow: 0 30px 80px rgba(0,0,0,0.35); 
-  }
-  .detail-overlay.active .detail-modal { 
-    transform: translateY(0); 
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08); 
+    padding: var(--sp-md); 
+    border-top: 4px solid var(--primary);
+    margin-bottom: var(--sp-lg);
   }
   .modal-breadcrumb { 
     background: var(--light); 
@@ -886,7 +864,7 @@ import ProductCatalog from '../components/catalog/ProductCatalog';
     .related-grid {
       grid-template-columns: repeat(2, 1fr);
     }
-    .detail-overlay {
+    .detail-view {
       padding: 2rem 1rem;
     }
   }

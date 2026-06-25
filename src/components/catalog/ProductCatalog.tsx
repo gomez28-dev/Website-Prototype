@@ -8,6 +8,46 @@ import {
   type Product, type Brand, type CategoryData 
 } from '../../data/products';
 
+function matchesSearch(p: Product, query: string): boolean {
+  if (!query) return true;
+  const q = query.toLowerCase().trim();
+  const checkStr = (str?: string) => str ? str.toLowerCase().includes(q) : false;
+
+  if (checkStr(p.name)) return true;
+  if (checkStr(p.desc)) return true;
+  if (checkStr(p.type)) return true;
+  if (checkStr(p.size)) return true;
+  if (checkStr(p.brand)) return true;
+
+  if (p.specs) {
+    for (const val of Object.values(p.specs)) {
+      if (checkStr(val)) return true;
+    }
+  }
+
+  if (p.specsTable?.rows) {
+    for (const row of p.specsTable.rows) {
+      for (const cell of row) {
+        if (checkStr(cell)) return true;
+      }
+    }
+  }
+
+  if (p.features) {
+    for (const f of p.features) {
+      if (checkStr(f)) return true;
+    }
+  }
+
+  if (p.keyFeatures) {
+    for (const kf of p.keyFeatures) {
+      if (checkStr(kf)) return true;
+    }
+  }
+
+  return false;
+}
+
 export default function ProductCatalog() {
   const [selectedCategoryKey, setSelectedCategoryKey] = useState<string>('');
   const [selectedBrandId, setSelectedBrandId] = useState<string>('');
@@ -18,7 +58,7 @@ export default function ProductCatalog() {
   const [activeImageIndex, setActiveImageIndex] = useState<number>(0);
   const [activeTab, setActiveTab] = useState<string>('detailSpecs');
 
-  const overlayRef = useRef<HTMLDivElement>(null);
+
 
   // Auto-scroll helper
   const scrollUp = () => {
@@ -31,7 +71,7 @@ export default function ProductCatalog() {
   // Close modal logic
   const closeModal = () => {
     setActiveProduct(null);
-    document.body.style.overflow = '';
+    scrollUp();
   };
 
   // Open modal logic
@@ -41,10 +81,7 @@ export default function ProductCatalog() {
     setActiveProductBrandName(brandName);
     setActiveImageIndex(0);
     setActiveTab('detailSpecs');
-    document.body.style.overflow = 'hidden';
-    if (overlayRef.current) {
-      overlayRef.current.scrollTop = 0;
-    }
+    scrollUp();
   };
 
   // Related products logic
@@ -184,14 +221,12 @@ export default function ProductCatalog() {
           });
         }
         displayedProducts = allCategoryProducts.filter(item => 
-          item.p.name.toLowerCase().includes(query) || 
-          (item.p.desc || '').toLowerCase().includes(query)
+          matchesSearch(item.p, query)
         );
         showBrandsGrid = false; // Hide brand selector if search is active
       } else {
         displayedProducts = activeProductsToDisplay.filter(item => 
-          item.p.name.toLowerCase().includes(query) || 
-          (item.p.desc || '').toLowerCase().includes(query)
+          matchesSearch(item.p, query)
         );
       }
     } else {
@@ -215,8 +250,7 @@ export default function ProductCatalog() {
       });
 
       displayedProducts = allGlobalProducts.filter(item => 
-        item.p.name.toLowerCase().includes(query) || 
-        (item.p.desc || '').toLowerCase().includes(query)
+        matchesSearch(item.p, query)
       );
     }
   } else if (!selectedCategoryKey) {
@@ -340,370 +374,382 @@ export default function ProductCatalog() {
 
   return (
     <div className="catalog-container-inner">
-      {/* SELECTION BAR CARD */}
-      <div className="category-card fade-in">
-        <div className="category-header">
-          <ShoppingBag size={24} className="category-header-icon" />
-          <h2>Select Product Category</h2>
-        </div>
-        <div className="category-select-wrap">
-          <div className="select-box-wrap">
-            <label className="category-label" htmlFor="productSearch">Search Products:</label>
-            <div className="search-input-container">
-              <input 
-                type="search" 
-                id="productSearch" 
-                className="category-select" 
-                placeholder="Type to search products..." 
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-              <Search className="search-icon" size={16} />
-            </div>
-          </div>
-          <div className="select-box-wrap">
-            <label className="category-label" htmlFor="categorySelect">Choose Category:</label>
-            <select 
-              id="categorySelect" 
-              className="category-select"
-              value={selectedCategoryKey}
-              onChange={handleCategoryChange}
-            >
-              <option value="">Select a Category</option>
-              <optgroup label="Automotive Products">
-                <option value="tires">Tires</option>
-                <option value="battery">Battery</option>
-                <option value="fuel">Fuel</option>
-              </optgroup>
-              <optgroup label="Equipment &amp; Vehicles">
-                <option value="fuel_storage_tank">Tanks</option>
-                <option value="fuel_dispenser">Fuel Dispenser</option>
-                <option value="lpg">LPG</option>
-                <option value="sinotruk">Trucks</option>
-              </optgroup>
-            </select>
-          </div>
-        </div>
-      </div>
-
-      {/* BRANDS SELECTION PANEL */}
-      {selectedCategoryKey && showBrandsGrid && (
-        <div className="section-wrapper">
-          <div className="section-nav">
-            <div className="section-nav-title">
-              <h2>Select {productData[selectedCategoryKey]?.name} Brand</h2>
-            </div>
-            <button className="back-btn" onClick={resetAll}>
-              <ArrowLeft size={14} /> Back
+      {activeProduct ? (
+        /* FULL-PAGE PRODUCT DETAILS TAKE OVER */
+        <div className="detail-view fade-in">
+          <div className="modal-close-bar" style={{ background: 'transparent', padding: '0 0 1.2rem 0', display: 'flex', justifyContent: 'flex-start' }}>
+            <button className="back-btn" onClick={closeModal} title="Back to Products" aria-label="Back to Products">
+              <ArrowLeft size={14} /> Back to Products
             </button>
           </div>
-          <div className="cards-grid-3 fade-in">
-            {(brandData[selectedCategoryKey] || []).map((brand) => (
-              <div className="ix-card" key={brand.id}>
-                <div className="ix-card-image">
-                  <img src={brand.image} alt={brand.name} loading="lazy" />
+          <div className="modal-breadcrumb" style={{ background: '#f5f8f9', padding: '1.2rem 2rem', marginBottom: '2rem', display: 'flex', alignItems: 'center', gap: 'var(--sp-xs)', fontSize: '1.4rem' }}>
+            <a href="/" style={{ color: 'var(--text)' }}>Home</a>
+            <ChevronRight size={12} style={{ color: '#aaa' }} />
+            <a href="#" onClick={(e) => { e.preventDefault(); closeModal(); }} style={{ color: 'var(--text)' }}>Products</a>
+            <ChevronRight size={12} style={{ color: '#aaa' }} />
+            <span className="bc-current" style={{ color: 'var(--primary)', fontWeight: 600 }}>{activeProductCategoryName}</span>
+            <ChevronRight size={12} style={{ color: '#aaa' }} />
+            <span className="bc-current" style={{ color: 'var(--primary)', fontWeight: 600 }}>{activeProduct.name}</span>
+          </div>
+
+          <div className="product-detail-section" style={{ padding: 0 }}>
+            <div className="product-detail-grid">
+              {/* GALLERY */}
+              <div className="product-gallery">
+                <div className="gallery-main">
+                  <img 
+                    src={activeProduct.images[activeImageIndex] || activeProduct.image} 
+                    alt={activeProduct.name} 
+                  />
                 </div>
-                <div className="ix-card-info">
-                  <h3 className="ix-card-title">{brand.name}</h3>
-                  <p className="ix-card-desc">{brand.desc}</p>
-                  <div className="ix-card-actions">
-                    <button 
-                      className="ix-btn ix-btn-light" 
-                      onClick={() => {
-                        setSelectedBrandId(brand.id);
-                        scrollUp();
-                      }}
-                    >
-                      View Products
-                    </button>
-                    <a href={`/contact?brand=${encodeURIComponent(brand.name)}`} className="ix-btn ix-btn-primary">
-                      Get Quote
-                    </a>
+                {activeProduct.images.length > 1 && (
+                  <div className="gallery-thumbs">
+                    {activeProduct.images.map((img, idx) => (
+                      <div 
+                        key={idx} 
+                        className={`gallery-thumb ${idx === activeImageIndex ? 'active' : ''}`}
+                        onClick={() => setActiveImageIndex(idx)}
+                      >
+                        <img src={img} alt={`${activeProduct.name} thumb ${idx}`} loading="lazy" />
+                      </div>
+                    ))}
                   </div>
+                )}
+              </div>
+
+              {/* INFO */}
+              <div className="product-info">
+                <span className="product-category-tag">{activeProductCategoryName}</span>
+                <h1 className="product-title">{activeProduct.name}</h1>
+                
+                {/* Hide descriptions for Truck category in details view */}
+                {!isTruck && activeProduct.desc && (
+                  <p className="product-description">{activeProduct.desc}</p>
+                )}
+
+                <div className="product-meta">
+                  <div className="meta-item">
+                    <span className="meta-label">Brand:</span>
+                    <span className="meta-value">{activeProductBrandName || activeProduct.brand}</span>
+                  </div>
+
+                  {/* Size metadata logic */}
+                  {!isFuel && !isTank && !isLPG && !isTruck && !isDispenser && !isTires && activeProduct.size && (
+                    <div className="meta-item">
+                      <span className="meta-label">Size/Model:</span>
+                      <span className="meta-value">{activeProduct.size}</span>
+                    </div>
+                  )}
+
+                  {isBattery && activeProduct.specs?.['Voltage'] && (
+                    <div className="meta-item">
+                      <span className="meta-label">Voltage:</span>
+                      <span className="meta-value">{activeProduct.specs['Voltage']}</span>
+                    </div>
+                  )}
+
+                  {activeProduct.warranty && activeProduct.warranty !== 'N/A' && (
+                    <div className="meta-item">
+                      <span className="meta-label">Warranty:</span>
+                      <span className="meta-value">{activeProduct.warranty}</span>
+                    </div>
+                  )}
+
+                  <div className="meta-item">
+                    <span className="meta-label">Availability:</span>
+                    <span className="meta-value" style={{ color: '#28a745', fontWeight: 600 }}>In Stock</span>
+                  </div>
+                </div>
+
+                {/* Features display */}
+                {showFeaturesSection && (
+                  <div className="product-features">
+                    <h3 className="features-title">Key Features</h3>
+                    <ul className="features-list">
+                      {featSource.map((f, i) => (
+                        <li key={i}>
+                          <CheckCircle size={14} />
+                          <span>{f}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                <div className="product-actions">
+                  <a href={getContactUrl(activeProduct)} className="action-btn btn-primary">
+                    <Mail size={16} /> Request Quote
+                  </a>
+                  <a href="/contact" className="action-btn btn-outline">
+                    <Phone size={16} /> Contact Us
+                  </a>
                 </div>
               </div>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* PRODUCTS DISPLAY PANEL */}
-      {selectedCategoryKey && !showBrandsGrid && (
-        <div className="section-wrapper">
-          <div className="section-nav">
-            <div className="section-nav-title">
-              <h2>
-                {selectedBrandId 
-                  ? `${brandData[selectedCategoryKey]?.find(b => b.id === selectedBrandId)?.name} ${productData[selectedCategoryKey]?.name}`
-                  : `${productData[selectedCategoryKey]?.name}s`
-                }
-              </h2>
             </div>
-            <button className="back-btn" onClick={goBackFromProducts}>
-              <ArrowLeft size={14} /> {productData[selectedCategoryKey]?.hasBrands ? 'Back to Brands' : 'Back'}
-            </button>
           </div>
-          
-          {displayedProducts.length === 0 ? (
-            <div className="empty-state">
-              <h3 className="empty-title">No products found</h3>
-              <p className="empty-text">Try adjusting your search criteria</p>
-            </div>
-          ) : (
-            <div className={getGridClass()}>
-              {displayedProducts.map((item, i) => {
-                // Check if card has custom layout classes
-                let cardLayoutClass = 'ix-card';
-                if (selectedCategoryKey === 'fuel_storage_tank') cardLayoutClass += ' fuel-storage-card';
-                else if (selectedCategoryKey === 'fuel') cardLayoutClass += ' fuel-card';
-                else if (selectedCategoryKey === 'fuel_dispenser') cardLayoutClass += ' fuel-dispenser-card';
 
-                return (
-                  <div className={cardLayoutClass} key={i}>
-                    <div className="ix-card-image">
-                      <img src={item.p.image} alt={item.p.name} loading="lazy" />
-                    </div>
-                    <div className="ix-card-info">
-                      <h4 className="ix-card-title" style={{ fontSize: '1.6rem' }}>{item.p.name}</h4>
-                      <div className="ix-card-actions" style={{ marginTop: 'var(--sp-sm)' }}>
-                        <button 
-                          className="ix-view-btn" 
-                          onClick={() => openModal(item.p, item.catName, item.brandName)}
-                        >
-                          View Details
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
+          {/* ADDITIONAL INFO TABS */}
+          {(activeProduct.specsTable || (activeProduct.specs && Object.keys(activeProduct.specs).length > 0) || (isLPG && activeProduct.features?.length)) && (
+            <div className="additional-info-section">
+              <div className="info-tabs">
+                <div 
+                  className={`info-tab ${activeTab === 'detailSpecs' ? 'active' : ''}`}
+                  onClick={() => setActiveTab('detailSpecs')}
+                >
+                  {getSpecTabLabel()}
+                </div>
+              </div>
+              <div className="info-content">
+                <div className={`info-panel ${activeTab === 'detailSpecs' ? 'active' : ''}`}>
+                  {renderModalSpecs(activeProduct)}
+                </div>
+              </div>
             </div>
           )}
-        </div>
-      )}
 
-      {/* SEARCHING ON EMPTY STATE RESETS OR MULTI-CATEGORY VIEW */}
-      {!selectedCategoryKey && (
-        <div className="section-wrapper">
-          <div className="section-nav">
-            <div className="section-nav-title">
-              <h2>{searchTerm ? `Search Results for "${searchTerm}"` : 'All Products'}</h2>
-            </div>
-            {searchTerm && (
-              <button className="back-btn" onClick={resetAll}>
-                <ArrowLeft size={14} /> Clear
-              </button>
-            )}
-          </div>
+          {/* RELATED PRODUCTS */}
+          <div className="related-section" style={{ marginTop: '3rem' }}>
+            <h2 className="related-title">Related Products</h2>
+            <div className="related-grid">
+              {getRelatedProducts(activeProduct).map((relProd, i) => (
+                <div 
+                  className="related-card" 
+                  key={i}
+                  onClick={() => {
+                    let relCatName = activeProductCategoryName;
+                    let relBrandName = activeProductBrandName;
+                    
+                    for (const catKey in productData) {
+                      const catVal = productData[catKey];
+                      if (catVal.hasBrands && catVal.brandProducts) {
+                        for (const brandKey in catVal.brandProducts) {
+                          const brandProds = catVal.brandProducts[brandKey];
+                          if (brandProds.some(bp => bp.name === relProd.name)) {
+                            relCatName = catVal.name;
+                            const brandObj = brandData[catKey]?.find(b => b.id === brandKey);
+                            relBrandName = brandObj?.name || relProd.brand;
+                            break;
+                          }
+                        }
+                      } else {
+                        if ((catVal.products || []).some(pr => pr.name === relProd.name)) {
+                          relCatName = catVal.name;
+                          relBrandName = relProd.brand;
+                          break;
+                        }
+                      }
+                    }
 
-          {displayedProducts.length === 0 ? (
-            <div className="empty-state">
-              <h3 className="empty-title">No products match your search</h3>
-              <p className="empty-text">Try searching for other terms like "LPG", "Tire", "Howo" or brand names like "Compasal"</p>
-            </div>
-          ) : (
-            <div className="cards-grid-4 fade-in">
-              {displayedProducts.map((item, i) => (
-                <div className="ix-card" key={i}>
-                  <div className="ix-card-image">
-                    <img src={item.p.image} alt={item.p.name} loading="lazy" />
+                    setActiveProduct(relProd);
+                    setActiveProductCategoryName(relCatName);
+                    setActiveProductBrandName(relBrandName);
+                    setActiveImageIndex(0);
+                    setActiveTab('detailSpecs');
+                    scrollUp();
+                  }}
+                >
+                  <div className="related-image">
+                    <img src={relProd.image} alt={relProd.name} loading="lazy" />
                   </div>
-                  <div className="ix-card-info">
-                    <span className="product-category-tag" style={{ fontSize: '1rem', marginBottom: '0.5rem', display: 'inline-block' }}>
-                      {item.catName}
-                    </span>
-                    <h4 className="ix-card-title" style={{ fontSize: '1.5rem', textAlign: 'left' }}>{item.p.name}</h4>
-                    <div className="ix-card-actions" style={{ marginTop: 'var(--sp-sm)', justifyContent: 'flex-start' }}>
-                      <button 
-                        className="ix-view-btn" 
-                        onClick={() => openModal(item.p, item.catName, item.brandName)}
-                      >
-                        View Details
-                      </button>
-                    </div>
+                  <div className="related-info">
+                    <h4 className="related-name">{relProd.name}</h4>
                   </div>
                 </div>
               ))}
             </div>
-          )}
+          </div>
         </div>
-      )}
-
-      {/* PRODUCT DETAILS MODAL OVERLAY */}
-      {activeProduct && (
-        <div 
-          className="detail-overlay active" 
-          ref={overlayRef}
-          onClick={(e) => {
-            if (e.target === overlayRef.current) closeModal();
-          }}
-        >
-          <div className="detail-modal">
-            <div className="modal-close-bar">
-              <button 
-                className="modal-close-btn" 
-                onClick={closeModal}
-                title="Close" 
-                aria-label="Close product detail"
-              >
-                <X size={18} />
-              </button>
+      ) : (
+        <>
+          {/* SELECTION BAR CARD */}
+          <div className="category-card fade-in">
+            <div className="category-header">
+              <ShoppingBag size={24} className="category-header-icon" />
+              <h2>Select Product Category</h2>
             </div>
-            <div className="modal-breadcrumb">
-              <a href="/">Home</a>
-              <ChevronRight size={12} style={{ color: '#aaa' }} />
-              <a href="#" onClick={(e) => { e.preventDefault(); closeModal(); }}>Products</a>
-              <ChevronRight size={12} style={{ color: '#aaa' }} />
-              <span className="bc-current">{activeProductCategoryName}</span>
-              <ChevronRight size={12} style={{ color: '#aaa' }} />
-              <span className="bc-current">{activeProduct.name}</span>
+            <div className="category-select-wrap">
+              <div className="select-box-wrap">
+                <label className="category-label" htmlFor="productSearch">Search Products:</label>
+                <div className="search-input-container">
+                  <input 
+                    type="search" 
+                    id="productSearch" 
+                    className="category-select" 
+                    placeholder="Type to search products..." 
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                  />
+                  <Search className="search-icon" size={16} />
+                </div>
+              </div>
+              <div className="select-box-wrap">
+                <label className="category-label" htmlFor="categorySelect">Choose Category:</label>
+                <select 
+                  id="categorySelect" 
+                  className="category-select"
+                  value={selectedCategoryKey}
+                  onChange={handleCategoryChange}
+                >
+                  <option value="">Select a Category</option>
+                  <optgroup label="Automotive Products">
+                    <option value="tires">Tires</option>
+                    <option value="battery">Battery</option>
+                    <option value="fuel">Fuel</option>
+                  </optgroup>
+                  <optgroup label="Equipment &amp; Vehicles">
+                    <option value="fuel_storage_tank">Tanks</option>
+                    <option value="fuel_dispenser">Fuel Dispenser</option>
+                    <option value="lpg">LPG</option>
+                    <option value="sinotruk">Trucks</option>
+                  </optgroup>
+                </select>
+              </div>
             </div>
+          </div>
 
-            <div className="product-detail-section">
-              <div className="product-detail-grid">
-                {/* GALLERY */}
-                <div className="product-gallery">
-                  <div className="gallery-main">
-                    <img 
-                      src={activeProduct.images[activeImageIndex] || activeProduct.image} 
-                      alt={activeProduct.name} 
-                    />
-                  </div>
-                  {activeProduct.images.length > 1 && (
-                    <div className="gallery-thumbs">
-                      {activeProduct.images.map((img, idx) => (
-                        <div 
-                          key={idx} 
-                          className={`gallery-thumb ${idx === activeImageIndex ? 'active' : ''}`}
-                          onClick={() => setActiveImageIndex(idx)}
+          {/* BRANDS SELECTION PANEL */}
+          {selectedCategoryKey && showBrandsGrid && (
+            <div className="section-wrapper">
+              <div className="section-nav">
+                <div className="section-nav-title">
+                  <h2>Select {productData[selectedCategoryKey]?.name} Brand</h2>
+                </div>
+                <button className="back-btn" onClick={resetAll}>
+                  <ArrowLeft size={14} /> Back
+                </button>
+              </div>
+              <div className="cards-grid-3 fade-in">
+                {(brandData[selectedCategoryKey] || []).map((brand) => (
+                  <div className="ix-card" key={brand.id}>
+                    <div className="ix-card-image">
+                      <img src={brand.image} alt={brand.name} loading="lazy" />
+                    </div>
+                    <div className="ix-card-info">
+                      <h3 className="ix-card-title">{brand.name}</h3>
+                      <p className="ix-card-desc">{brand.desc}</p>
+                      <div className="ix-card-actions">
+                        <button 
+                          className="ix-btn ix-btn-light" 
+                          onClick={() => {
+                            setSelectedBrandId(brand.id);
+                            scrollUp();
+                          }}
                         >
-                          <img src={img} alt={`${activeProduct.name} thumb ${idx}`} loading="lazy" />
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-
-                {/* INFO */}
-                <div className="product-info">
-                  <span className="product-category-tag">{activeProductCategoryName}</span>
-                  <h1 className="product-title">{activeProduct.name}</h1>
-                  
-                  {/* Hide descriptions for Truck category in details view */}
-                  {!isTruck && activeProduct.desc && (
-                    <p className="product-description">{activeProduct.desc}</p>
-                  )}
-
-                  <div className="product-meta">
-                    <div className="meta-item">
-                      <span className="meta-label">Brand:</span>
-                      <span className="meta-value">{activeProductBrandName || activeProduct.brand}</span>
-                    </div>
-
-                    {/* Size metadata logic */}
-                    {!isFuel && !isTank && !isLPG && !isTruck && !isDispenser && !isTires && activeProduct.size && (
-                      <div className="meta-item">
-                        <span className="meta-label">Size/Model:</span>
-                        <span className="meta-value">{activeProduct.size}</span>
+                          View Products
+                        </button>
+                        <a href={`/contact?brand=${encodeURIComponent(brand.name)}`} className="ix-btn ix-btn-primary">
+                          Get Quote
+                        </a>
                       </div>
-                    )}
-
-                    {isBattery && activeProduct.specs?.['Voltage'] && (
-                      <div className="meta-item">
-                        <span className="meta-label">Voltage:</span>
-                        <span className="meta-value">{activeProduct.specs['Voltage']}</span>
-                      </div>
-                    )}
-
-                    {activeProduct.warranty && activeProduct.warranty !== 'N/A' && (
-                      <div className="meta-item">
-                        <span className="meta-label">Warranty:</span>
-                        <span className="meta-value">{activeProduct.warranty}</span>
-                      </div>
-                    )}
-
-                    <div className="meta-item">
-                      <span className="meta-label">Availability:</span>
-                      <span className="meta-value" style={{ color: '#28a745', fontWeight: 600 }}>In Stock</span>
-                    </div>
-                  </div>
-
-                  {/* Features display */}
-                  {showFeaturesSection && (
-                    <div className="product-features">
-                      <h3 className="features-title">Key Features</h3>
-                      <ul className="features-list">
-                        {featSource.map((f, i) => (
-                          <li key={i}>
-                            <CheckCircle size={14} />
-                            <span>{f}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-
-                  <div className="product-actions">
-                    <a href={getContactUrl(activeProduct)} className="action-btn btn-primary">
-                      <Mail size={16} /> Request Quote
-                    </a>
-                    <a href="/contact" className="action-btn btn-outline">
-                      <Phone size={16} /> Contact Us
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* ADDITIONAL INFO TABS */}
-            {(activeProduct.specsTable || (activeProduct.specs && Object.keys(activeProduct.specs).length > 0) || (isLPG && activeProduct.features?.length)) && (
-              <div className="additional-info-section">
-                <div className="info-tabs">
-                  <div 
-                    className={`info-tab ${activeTab === 'detailSpecs' ? 'active' : ''}`}
-                    onClick={() => setActiveTab('detailSpecs')}
-                  >
-                    {getSpecTabLabel()}
-                  </div>
-                </div>
-                <div className="info-content">
-                  <div className={`info-panel ${activeTab === 'detailSpecs' ? 'active' : ''}`}>
-                    {renderModalSpecs(activeProduct)}
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* RELATED PRODUCTS */}
-            <div className="related-section">
-              <h2 className="related-title">Related Products</h2>
-              <div className="related-grid">
-                {getRelatedProducts(activeProduct).map((relProd, i) => (
-                  <div 
-                    className="related-card" 
-                    key={i}
-                    onClick={() => {
-                      // Navigate detail in-modal
-                      setActiveProduct(relProd);
-                      setActiveImageIndex(0);
-                      setActiveTab('detailSpecs');
-                      if (overlayRef.current) {
-                        overlayRef.current.scrollTop = 0;
-                      }
-                    }}
-                  >
-                    <div className="related-image">
-                      <img src={relProd.image} alt={relProd.name} loading="lazy" />
-                    </div>
-                    <div className="related-info">
-                      <h4 className="related-name">{relProd.name}</h4>
                     </div>
                   </div>
                 ))}
               </div>
             </div>
-          </div>
-        </div>
+          )}
+
+          {/* PRODUCTS DISPLAY PANEL */}
+          {selectedCategoryKey && !showBrandsGrid && (
+            <div className="section-wrapper">
+              <div className="section-nav">
+                <div className="section-nav-title">
+                  <h2>
+                    {selectedBrandId 
+                      ? `${brandData[selectedCategoryKey]?.find(b => b.id === selectedBrandId)?.name} ${productData[selectedCategoryKey]?.name}`
+                      : `${productData[selectedCategoryKey]?.name}s`
+                    }
+                  </h2>
+                </div>
+                <button className="back-btn" onClick={goBackFromProducts}>
+                  <ArrowLeft size={14} /> {productData[selectedCategoryKey]?.hasBrands ? 'Back to Brands' : 'Back'}
+                </button>
+              </div>
+              
+              {displayedProducts.length === 0 ? (
+                <div className="empty-state">
+                  <h3 className="empty-title">No products found</h3>
+                  <p className="empty-text">Try adjusting your search criteria</p>
+                </div>
+              ) : (
+                <div className={getGridClass()}>
+                  {displayedProducts.map((item, i) => {
+                    // Check if card has custom layout classes
+                    let cardLayoutClass = 'ix-card';
+                    if (selectedCategoryKey === 'fuel_storage_tank') cardLayoutClass += ' fuel-storage-card';
+                    else if (selectedCategoryKey === 'fuel') cardLayoutClass += ' fuel-card';
+                    else if (selectedCategoryKey === 'fuel_dispenser') cardLayoutClass += ' fuel-dispenser-card';
+
+                    return (
+                      <div className={cardLayoutClass} key={i}>
+                        <div className="ix-card-image">
+                          <img src={item.p.image} alt={item.p.name} loading="lazy" />
+                        </div>
+                        <div className="ix-card-info">
+                          <h4 className="ix-card-title" style={{ fontSize: '1.6rem' }}>{item.p.name}</h4>
+                          <div className="ix-card-actions" style={{ marginTop: 'var(--sp-sm)' }}>
+                            <button 
+                              className="ix-view-btn" 
+                              onClick={() => openModal(item.p, item.catName, item.brandName)}
+                            >
+                              View Details
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* SEARCHING ON EMPTY STATE RESETS OR MULTI-CATEGORY VIEW */}
+          {!selectedCategoryKey && (
+            <div className="section-wrapper">
+              <div className="section-nav">
+                <div className="section-nav-title">
+                  <h2>{searchTerm ? `Search Results for "${searchTerm}"` : 'All Products'}</h2>
+                </div>
+                {searchTerm && (
+                  <button className="back-btn" onClick={resetAll}>
+                    <ArrowLeft size={14} /> Clear
+                  </button>
+                )}
+              </div>
+
+              {displayedProducts.length === 0 ? (
+                <div className="empty-state">
+                  <h3 className="empty-title">No products match your search</h3>
+                  <p className="empty-text">Try searching for other terms like "LPG", "Tire", "Howo" or brand names like "Compasal"</p>
+                </div>
+              ) : (
+                <div className="cards-grid-4 fade-in">
+                  {displayedProducts.map((item, i) => (
+                    <div className="ix-card" key={i}>
+                      <div className="ix-card-image">
+                        <img src={item.p.image} alt={item.p.name} loading="lazy" />
+                      </div>
+                      <div className="ix-card-info">
+                        <span className="product-category-tag" style={{ fontSize: '1rem', marginBottom: '0.5rem', display: 'inline-block' }}>
+                          {item.catName}
+                        </span>
+                        <h4 className="ix-card-title" style={{ fontSize: '1.5rem', textAlign: 'left' }}>{item.p.name}</h4>
+                        <div className="ix-card-actions" style={{ marginTop: 'var(--sp-sm)', justifyContent: 'flex-start' }}>
+                          <button 
+                            className="ix-view-btn" 
+                            onClick={() => openModal(item.p, item.catName, item.brandName)}
+                          >
+                            View Details
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+        </>
       )}
     </div>
   );
