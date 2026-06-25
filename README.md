@@ -2,7 +2,7 @@
 
 Corporate website for **DOYEN Group of Companies** — a Philippine diversified industrial conglomerate supplying tires, batteries, fuel, tanks, dispensers, LPG, and Sinotruk heavy-duty trucks.
 
-🔗 **Live site:** [https://doyen-astro.netlify.app](https://doyen-astro.netlify.app)
+🔗 **Live site:** [https://doyen-prototype.netlify.app](https://doyen-prototype.netlify.app)
 
 ---
 
