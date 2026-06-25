@@ -58,7 +58,7 @@ export const TIRE_SUB = [
 
 export const productData: Record<string, CategoryData> = {
   tires: {
-    name: 'Tires',
+    name: 'Tire',
     hasBrands: true,
     brandProducts: {
       compasal: [
