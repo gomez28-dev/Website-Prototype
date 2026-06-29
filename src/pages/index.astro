@@ -37,38 +37,41 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         We are authorized distributor of major international automotive brands in the Philippines
         for your industrial and commercial essentials engineered to last.
       </p>
-      <table class="products-table">
-        <tbody>
-          <tr>
-            <td>
-              <a href="/products" class="product-cell-inner">
-                <img
-                  src="/assets/images/Automotive Products.webp"
-                  alt="Automotive Products"
-                  loading="lazy"
-                />
-                <div class="product-cell-label">
-                  <div class="product-cell-sub">Tires &amp; Battery</div>
-                  <strong>Automotive Products</strong>
-                </div>
-              </a>
-            </td>
-            <td>
-              <a href="/products" class="product-cell-inner">
-                <img
-                  src="/assets/images/Equipment &amp; Vehicles.webp"
-                  alt="Equipment &amp; Vehicles"
-                  loading="lazy"
-                />
-                <div class="product-cell-label">
-                  <div class="product-cell-sub">Trucks</div>
-                  <strong>Equipment &amp; Vehicles</strong>
-                </div>
-              </a>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="products-grid">
+        <a href="/products" class="product-cell-inner">
+          <img
+            src="/assets/images/Automotive Products.webp"
+            alt="Automotive Products"
+            loading="lazy"
+          />
+          <div class="product-cell-label">
+            <div class="product-cell-sub">Tires &amp; Battery</div>
+            <strong>Automotive Products</strong>
+          </div>
+        </a>
+        <a href="/products" class="product-cell-inner">
+          <img
+            src="/assets/images/BIG TANKER.webp"
+            alt="Energy Solutions"
+            loading="lazy"
+          />
+          <div class="product-cell-label">
+            <div class="product-cell-sub">Fuel, Tanks &amp; LPG</div>
+            <strong>Energy Solutions</strong>
+          </div>
+        </a>
+        <a href="/products" class="product-cell-inner">
+          <img
+            src="/assets/images/Equipment &amp; Vehicles.webp"
+            alt="Fleet &amp; Equipment"
+            loading="lazy"
+          />
+          <div class="product-cell-label">
+            <div class="product-cell-sub">Sinotruk Trucks</div>
+            <strong>Fleet &amp; Equipment</strong>
+          </div>
+        </a>
+      </div>
     </div>
   </section>
 
@@ -168,8 +171,12 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     margin: 0 auto var(--sp-lg);
     line-height: 1.7;
   }
-  .products-table { width: 100%; border-collapse: collapse; }
-  .products-table td { width: 50%; padding: 0; }
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--sp-md);
+    width: 100%;
+  }
   .product-cell-inner {
     display: flex;
     flex-direction: column;
@@ -231,12 +238,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     .welcome-text { font-size: clamp(1.4rem, 3.5vw, 1.75rem); padding: 0 1rem; }
     .product-cell-inner { min-height: 20rem; }
     .about-section p { font-size: clamp(1.4rem, 3.5vw, 1.75rem); padding: 0 0.5rem; }
-    .products-table,
-    .products-table tbody,
-    .products-table tr,
-    .products-table td {
-      display: block;
-      width: 100%;
+    .products-grid {
+      grid-template-columns: 1fr;
     }
   }
   @media (max-width: 380px) {

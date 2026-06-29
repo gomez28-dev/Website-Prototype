@@ -390,37 +390,6 @@ import ContactForm from '../components/contact/ContactForm';
   }
 
   /* Submission Overlay & Buttons */
-  :global(.sending-overlay) {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.45);
-    z-index: 9999;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    gap: 1.4rem;
-  }
-  :global(.sending-overlay.active) {
-    display: flex;
-  }
-  :global(.sending-spinner) {
-    width: 52px;
-    height: 52px;
-    border: 5px solid rgba(255,255,255,0.3);
-    border-top-color: var(--primary);
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
-  }
-  @keyframes spin {
-    to { transform: rotate(360deg); }
-  }
-  :global(.sending-overlay p) {
-    color: #fff;
-    font-size: 1.6rem;
-    font-weight: 600;
-    letter-spacing: 0.03em;
-  }
   :global(.submit-area) {
     text-align: center;
     margin-top: 12px;

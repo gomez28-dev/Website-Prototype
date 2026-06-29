@@ -2,6 +2,7 @@
 // src/components/layout/Header.astro
 // Server-rendered header — no JS injection, no string concatenation, no basePath hack.
 // Active page highlight via Astro.url.pathname passed from BaseLayout.
+import { navItems } from '../../data/nav';
 
 interface Props {
   pathname: string;
@@ -12,6 +13,12 @@ const { pathname } = Astro.props;
 function isActive(href: string): boolean {
   if (href === '/') return pathname === '/' || pathname === '';
   return pathname.startsWith(href);
+}
+
+function NavId(href: string): string {
+  if (href === '/') return 'nav-home';
+  if (href === '/careers') return 'nav-career';
+  return 'nav-' + href.replace('/', '');
 }
 ---
 
@@ -29,44 +36,24 @@ function isActive(href: string): boolean {
 
     <div class="header-nav-area">
       <ul class="nav-menu">
-        <li>
-          <a href="/" id="nav-home" class:list={[{ active: isActive('/') && pathname === '/' }]}>
-            Home
-          </a>
-        </li>
-        <li class="has-dropdown">
-          <a href="/about" id="nav-about" class:list={[{ active: isActive('/about') }]}>
-            About Us
-          </a>
-          <div class="dropdown">
-            <a href="/about#who-we-are">Who We Are</a>
-            <a href="/about#our-journey">Our Journey</a>
-            <a href="/about#our-story">Our Story</a>
-            <a href="/about#mission-vision">Mission &amp; Vision</a>
-            <a href="/about#why-partner">Why Partner With Us</a>
-            <a href="/about#our-facilities">Our Facilities</a>
-          </div>
-        </li>
-        <li>
-          <a href="/products" id="nav-products" class:list={[{ active: isActive('/products') }]}>
-            Products
-          </a>
-        </li>
-        <li>
-          <a href="/news" id="nav-news" class:list={[{ active: isActive('/news') }]}>
-            Events
-          </a>
-        </li>
-        <li>
-          <a href="/careers" id="nav-career" class:list={[{ active: isActive('/careers') }]}>
-            Careers
-          </a>
-        </li>
-        <li>
-          <a href="/contact" id="nav-contact" class:list={[{ active: isActive('/contact') }]}>
-            Contact Us
-          </a>
-        </li>
+        {navItems.map((item) => (
+          <li class:list={[{ 'has-dropdown': !!item.children }]}>
+            <a
+              href={item.href}
+              id={NavId(item.href)}
+              class:list={[{ active: isActive(item.href) && (item.href !== '/' || pathname === '/') }]}
+            >
+              {item.label}
+            </a>
+            {item.children && (
+              <div class="dropdown">
+                {item.children.map((child) => (
+                  <a href={child.href}>{child.label}</a>
+                ))}
+              </div>
+            )}
+          </li>
+        ))}
       </ul>
     </div>
 

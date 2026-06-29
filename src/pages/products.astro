@@ -406,6 +406,32 @@ import ProductCatalog from '../components/catalog/ProductCatalog';
     border-top: 4px solid var(--primary);
     margin-bottom: var(--sp-lg);
   }
+  .detail-close-bar {
+    background: transparent;
+    padding: 0 0 1.2rem 0;
+    display: flex;
+    justify-content: flex-start;
+  }
+  .detail-breadcrumb {
+    background: #f5f8f9;
+    padding: 1.2rem 2rem;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    gap: var(--sp-xs);
+    font-size: 1.4rem;
+  }
+  .detail-breadcrumb a { color: var(--text); }
+  .detail-breadcrumb svg { color: #aaa; }
+  .detail-breadcrumb .bc-current { color: var(--primary); font-weight: 600; }
+  .detail-section-wrapper { padding: 0; }
+  .stock-in-stock { color: #28a745; font-weight: 600; }
+  .related-section-wrap { margin-top: 3rem; }
+  .category-card-title { font-size: 1.6rem; }
+  .category-card-actions { margin-top: var(--sp-sm); }
+  .search-card-tag { font-size: 1rem; margin-bottom: 0.5rem; display: inline-block; }
+  .search-card-title { font-size: 1.5rem; text-align: left; }
+  .search-card-actions { margin-top: var(--sp-sm); justify-content: flex-start; }
   .modal-breadcrumb { 
     background: var(--light); 
     padding: 1.6rem 3rem; 

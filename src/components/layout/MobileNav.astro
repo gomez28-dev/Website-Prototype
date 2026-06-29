@@ -2,6 +2,7 @@
 // src/components/layout/MobileNav.astro
 // Mobile slide-out navigation panel.
 // Script replaces main.js mobile nav logic — no setTimeout, no global window hacks.
+import { navItems } from '../../data/nav';
 
 interface Props {
   pathname: string;
@@ -10,8 +11,14 @@ interface Props {
 const { pathname } = Astro.props;
 
 function isActive(href: string): boolean {
-  if (href === '/') return pathname === '/';
+  if (href === '/') return pathname === '/' || pathname === '';
   return pathname.startsWith(href);
+}
+
+function getMnavId(href: string): string {
+  if (href === '/') return 'mnav-home';
+  if (href === '/careers') return 'mnav-career';
+  return 'mnav-' + href.replace('/', '');
 }
 ---
 
@@ -21,48 +28,37 @@ function isActive(href: string): boolean {
 <!-- Slide-out nav -->
 <nav class="mobile-nav" id="mobileNav" aria-label="Mobile navigation">
   <ul class="mobile-nav-menu">
-    <li>
-      <a href="/" id="mnav-home" class:list={[{ active: pathname === '/' }]}>Home</a>
-    </li>
-    <li>
-      <a
-        href="/about"
-        class:list={['dropdown-toggle', { active: isActive('/about') }]}
-        id="mnav-about"
-      >
-        About Us
-        <!-- Chevron down SVG — toggled by script -->
-        <svg class="chevron-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="m6 9 6 6 6-6"/>
-        </svg>
-      </a>
-      <div class="mobile-dropdown">
-        <a href="/about#who-we-are">Who We Are</a>
-        <a href="/about#our-journey">Our Journey</a>
-        <a href="/about#our-story">Our Story</a>
-        <a href="/about#mission-vision">Mission &amp; Vision</a>
-        <a href="/about#why-partner">Why Partner With Us</a>
-        <a href="/about#our-facilities">Our Facilities</a>
-      </div>
-    </li>
-    <li>
-      <a href="/products" id="mnav-products" class:list={[{ active: isActive('/products') }]}>
-        Products
-      </a>
-    </li>
-    <li>
-      <a href="/news" id="mnav-news" class:list={[{ active: isActive('/news') }]}>Events</a>
-    </li>
-    <li>
-      <a href="/careers" id="mnav-career" class:list={[{ active: isActive('/careers') }]}>
-        Careers
-      </a>
-    </li>
-    <li>
-      <a href="/contact" id="mnav-contact" class:list={[{ active: isActive('/contact') }]}>
-        Contact Us
-      </a>
-    </li>
+    {navItems.map((item) => (
+      <li>
+        {item.children ? (
+          <>
+            <a
+              href={item.href}
+              class:list={['dropdown-toggle', { active: isActive(item.href) }]}
+              id={getMnavId(item.href)}
+            >
+              {item.label}
+              <svg class="chevron-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="m6 9 6 6 6-6"/>
+              </svg>
+            </a>
+            <div class="mobile-dropdown">
+              {item.children.map((child) => (
+                <a href={child.href}>{child.label}</a>
+              ))}
+            </div>
+          </>
+        ) : (
+          <a
+            href={item.href}
+            id={getMnavId(item.href)}
+            class:list={[{ active: item.href === '/' ? pathname === '/' : isActive(item.href) }]}
+          >
+            {item.label}
+          </a>
+        )}
+      </li>
+    ))}
   </ul>
 </nav>
 

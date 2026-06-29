@@ -1,12 +1,17 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
-  Search, ShoppingBag, X, ChevronRight, ArrowLeft, 
-  CheckCircle, Shield, Mail, Phone, Lock 
+  Search, ShoppingBag, ChevronRight, ArrowLeft, 
+  CheckCircle, Shield, Mail, Phone 
 } from 'lucide-react';
 import { 
   productData, brandData, TIRE_GROUPS, TIRE_SUB, 
-  type Product, type Brand, type CategoryData 
+  type Product, type CategoryData 
 } from '../../data/products';
+import ProductCard from './ProductCard';
+import BrandCard from './BrandCard';
+import RelatedCard from './RelatedCard';
+import SectionNav from './SectionNav';
+import EmptyState from './EmptyState';
 
 function matchesSearch(p: Product, query: string): boolean {
   if (!query) return true;
@@ -377,22 +382,22 @@ export default function ProductCatalog() {
       {activeProduct ? (
         /* FULL-PAGE PRODUCT DETAILS TAKE OVER */
         <div className="detail-view fade-in">
-          <div className="modal-close-bar" style={{ background: 'transparent', padding: '0 0 1.2rem 0', display: 'flex', justifyContent: 'flex-start' }}>
+          <div className="modal-close-bar detail-close-bar">
             <button className="back-btn" onClick={closeModal} title="Back to Products" aria-label="Back to Products">
               <ArrowLeft size={14} /> Back to Products
             </button>
           </div>
-          <div className="modal-breadcrumb" style={{ background: '#f5f8f9', padding: '1.2rem 2rem', marginBottom: '2rem', display: 'flex', alignItems: 'center', gap: 'var(--sp-xs)', fontSize: '1.4rem' }}>
-            <a href="/" style={{ color: 'var(--text)' }}>Home</a>
-            <ChevronRight size={12} style={{ color: '#aaa' }} />
-            <a href="#" onClick={(e) => { e.preventDefault(); closeModal(); }} style={{ color: 'var(--text)' }}>Products</a>
-            <ChevronRight size={12} style={{ color: '#aaa' }} />
-            <span className="bc-current" style={{ color: 'var(--primary)', fontWeight: 600 }}>{activeProductCategoryName}</span>
-            <ChevronRight size={12} style={{ color: '#aaa' }} />
-            <span className="bc-current" style={{ color: 'var(--primary)', fontWeight: 600 }}>{activeProduct.name}</span>
+          <div className="modal-breadcrumb detail-breadcrumb">
+            <a href="/">Home</a>
+            <ChevronRight size={12} />
+            <a href="#" onClick={(e) => { e.preventDefault(); closeModal(); }}>Products</a>
+            <ChevronRight size={12} />
+            <span className="bc-current">{activeProductCategoryName}</span>
+            <ChevronRight size={12} />
+            <span className="bc-current">{activeProduct.name}</span>
           </div>
 
-          <div className="product-detail-section" style={{ padding: 0 }}>
+          <div className="product-detail-section detail-section-wrapper">
             <div className="product-detail-grid">
               {/* GALLERY */}
               <div className="product-gallery">
@@ -457,7 +462,7 @@ export default function ProductCatalog() {
 
                   <div className="meta-item">
                     <span className="meta-label">Availability:</span>
-                    <span className="meta-value" style={{ color: '#28a745', fontWeight: 600 }}>In Stock</span>
+                    <span className="meta-value stock-in-stock">In Stock</span>
                   </div>
                 </div>
 
@@ -508,13 +513,13 @@ export default function ProductCatalog() {
           )}
 
           {/* RELATED PRODUCTS */}
-          <div className="related-section" style={{ marginTop: '3rem' }}>
+          <div className="related-section related-section-wrap">
             <h2 className="related-title">Related Products</h2>
             <div className="related-grid">
               {getRelatedProducts(activeProduct).map((relProd, i) => (
-                <div 
-                  className="related-card" 
+                <RelatedCard
                   key={i}
+                  product={relProd}
                   onClick={() => {
                     let relCatName = activeProductCategoryName;
                     let relBrandName = activeProductBrandName;
@@ -547,14 +552,7 @@ export default function ProductCatalog() {
                     setActiveTab('detailSpecs');
                     scrollUp();
                   }}
-                >
-                  <div className="related-image">
-                    <img src={relProd.image} alt={relProd.name} loading="lazy" />
-                  </div>
-                  <div className="related-info">
-                    <h4 className="related-name">{relProd.name}</h4>
-                  </div>
-                </div>
+                />
               ))}
             </div>
           </div>
@@ -610,39 +608,21 @@ export default function ProductCatalog() {
           {/* BRANDS SELECTION PANEL */}
           {selectedCategoryKey && showBrandsGrid && (
             <div className="section-wrapper">
-              <div className="section-nav">
-                <div className="section-nav-title">
-                  <h2>Select {productData[selectedCategoryKey]?.name} Brand</h2>
-                </div>
-                <button className="back-btn" onClick={resetAll}>
-                  <ArrowLeft size={14} /> Back
-                </button>
-              </div>
+              <SectionNav
+                title={`Select ${productData[selectedCategoryKey]?.name} Brand`}
+                onBack={resetAll}
+                backLabel="Back"
+              />
               <div className="cards-grid-3 fade-in">
                 {(brandData[selectedCategoryKey] || []).map((brand) => (
-                  <div className="ix-card" key={brand.id}>
-                    <div className="ix-card-image">
-                      <img src={brand.image} alt={brand.name} loading="lazy" />
-                    </div>
-                    <div className="ix-card-info">
-                      <h3 className="ix-card-title">{brand.name}</h3>
-                      <p className="ix-card-desc">{brand.desc}</p>
-                      <div className="ix-card-actions">
-                        <button 
-                          className="ix-btn ix-btn-light" 
-                          onClick={() => {
-                            setSelectedBrandId(brand.id);
-                            scrollUp();
-                          }}
-                        >
-                          View Products
-                        </button>
-                        <a href={`/contact?brand=${encodeURIComponent(brand.name)}`} className="ix-btn ix-btn-primary">
-                          Get Quote
-                        </a>
-                      </div>
-                    </div>
-                  </div>
+                  <BrandCard
+                    key={brand.id}
+                    brand={brand}
+                    onSelectBrand={() => {
+                      setSelectedBrandId(brand.id);
+                      scrollUp();
+                    }}
+                  />
                 ))}
               </div>
             </div>
@@ -651,51 +631,33 @@ export default function ProductCatalog() {
           {/* PRODUCTS DISPLAY PANEL */}
           {selectedCategoryKey && !showBrandsGrid && (
             <div className="section-wrapper">
-              <div className="section-nav">
-                <div className="section-nav-title">
-                  <h2>
-                    {selectedBrandId 
-                      ? `${brandData[selectedCategoryKey]?.find(b => b.id === selectedBrandId)?.name} ${productData[selectedCategoryKey]?.name}`
-                      : `${productData[selectedCategoryKey]?.name}s`
-                    }
-                  </h2>
-                </div>
-                <button className="back-btn" onClick={goBackFromProducts}>
-                  <ArrowLeft size={14} /> {productData[selectedCategoryKey]?.hasBrands ? 'Back to Brands' : 'Back'}
-                </button>
-              </div>
+              <SectionNav
+                title={
+                  selectedBrandId 
+                    ? `${brandData[selectedCategoryKey]?.find(b => b.id === selectedBrandId)?.name} ${productData[selectedCategoryKey]?.name}`
+                    : `${productData[selectedCategoryKey]?.name}s`
+                }
+                onBack={goBackFromProducts}
+                backLabel={productData[selectedCategoryKey]?.hasBrands ? 'Back to Brands' : 'Back'}
+              />
               
               {displayedProducts.length === 0 ? (
-                <div className="empty-state">
-                  <h3 className="empty-title">No products found</h3>
-                  <p className="empty-text">Try adjusting your search criteria</p>
-                </div>
+                <EmptyState title="No products found" text="Try adjusting your search criteria" />
               ) : (
                 <div className={getGridClass()}>
                   {displayedProducts.map((item, i) => {
-                    // Check if card has custom layout classes
                     let cardLayoutClass = 'ix-card';
                     if (selectedCategoryKey === 'fuel_storage_tank') cardLayoutClass += ' fuel-storage-card';
                     else if (selectedCategoryKey === 'fuel') cardLayoutClass += ' fuel-card';
                     else if (selectedCategoryKey === 'fuel_dispenser') cardLayoutClass += ' fuel-dispenser-card';
 
                     return (
-                      <div className={cardLayoutClass} key={i}>
-                        <div className="ix-card-image">
-                          <img src={item.p.image} alt={item.p.name} loading="lazy" />
-                        </div>
-                        <div className="ix-card-info">
-                          <h4 className="ix-card-title" style={{ fontSize: '1.6rem' }}>{item.p.name}</h4>
-                          <div className="ix-card-actions" style={{ marginTop: 'var(--sp-sm)' }}>
-                            <button 
-                              className="ix-view-btn" 
-                              onClick={() => openModal(item.p, item.catName, item.brandName)}
-                            >
-                              View Details
-                            </button>
-                          </div>
-                        </div>
-                      </div>
+                      <ProductCard
+                        key={i}
+                        product={item.p}
+                        layoutClass={cardLayoutClass}
+                        onViewDetails={() => openModal(item.p, item.catName, item.brandName)}
+                      />
                     );
                   })}
                 </div>
@@ -706,44 +668,27 @@ export default function ProductCatalog() {
           {/* SEARCHING ON EMPTY STATE RESETS OR MULTI-CATEGORY VIEW */}
           {!selectedCategoryKey && (
             <div className="section-wrapper">
-              <div className="section-nav">
-                <div className="section-nav-title">
-                  <h2>{searchTerm ? `Search Results for "${searchTerm}"` : 'All Products'}</h2>
-                </div>
-                {searchTerm && (
-                  <button className="back-btn" onClick={resetAll}>
-                    <ArrowLeft size={14} /> Clear
-                  </button>
-                )}
-              </div>
+              <SectionNav
+                title={searchTerm ? `Search Results for "${searchTerm}"` : 'All Products'}
+                onBack={searchTerm ? resetAll : undefined}
+                backLabel="Clear"
+              />
 
               {displayedProducts.length === 0 ? (
-                <div className="empty-state">
-                  <h3 className="empty-title">No products match your search</h3>
-                  <p className="empty-text">Try searching for other terms like "LPG", "Tire", "Howo" or brand names like "Compasal"</p>
-                </div>
+                <EmptyState
+                  title="No products match your search"
+                  text='Try searching for other terms like "LPG", "Tire", "Howo" or brand names like "Compasal"'
+                />
               ) : (
                 <div className="cards-grid-4 fade-in">
                   {displayedProducts.map((item, i) => (
-                    <div className="ix-card" key={i}>
-                      <div className="ix-card-image">
-                        <img src={item.p.image} alt={item.p.name} loading="lazy" />
-                      </div>
-                      <div className="ix-card-info">
-                        <span className="product-category-tag" style={{ fontSize: '1rem', marginBottom: '0.5rem', display: 'inline-block' }}>
-                          {item.catName}
-                        </span>
-                        <h4 className="ix-card-title" style={{ fontSize: '1.5rem', textAlign: 'left' }}>{item.p.name}</h4>
-                        <div className="ix-card-actions" style={{ marginTop: 'var(--sp-sm)', justifyContent: 'flex-start' }}>
-                          <button 
-                            className="ix-view-btn" 
-                            onClick={() => openModal(item.p, item.catName, item.brandName)}
-                          >
-                            View Details
-                          </button>
-                        </div>
-                      </div>
-                    </div>
+                    <ProductCard
+                      key={i}
+                      product={item.p}
+                      categoryName={item.catName}
+                      variant="search"
+                      onViewDetails={() => openModal(item.p, item.catName, item.brandName)}
+                    />
                   ))}
                 </div>
               )}

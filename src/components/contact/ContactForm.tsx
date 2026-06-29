@@ -2,13 +2,13 @@ import React, { useState, useEffect, useMemo } from 'react';
 import emailjs from '@emailjs/browser';
 import PhoneInput from 'react-phone-number-input';
 import 'react-phone-number-input/style.css';
-import { isValidPhoneNumber, getCountryCallingCode } from 'libphonenumber-js';
+import { isValidPhoneNumber } from 'libphonenumber-js';
 import type { CountryCode } from 'libphonenumber-js';
 import { Send, User, Mail, Globe, MessageSquare, Lock } from 'lucide-react';
 import { countries, getFlag, type CountryOption } from '../../data/countries';
 
-const EMAILJS_PUBLIC_KEY = 'eKyGjQqzlwi8gVTW7';
-const EMAILJS_SERVICE_ID = 'service_5wed65w';
+const EMAILJS_PUBLIC_KEY = import.meta.env.PUBLIC_EMAILJS_PUBLIC_KEY || 'eKyGjQqzlwi8gVTW7';
+const EMAILJS_SERVICE_ID = import.meta.env.PUBLIC_EMAILJS_SERVICE_ID || 'service_5wed65w';
 const EMAILJS_TEMPLATE_ID = 'template_pgb7kdg';
 
 export default function ContactForm() {
@@ -25,6 +25,7 @@ export default function ContactForm() {
   const [loading, setLoading] = useState(false);
   const [charCount, setCharCount] = useState(0);
   const [phoneError, setPhoneError] = useState('');
+  const [statusInfo, setStatusInfo] = useState<{ type: 'success' | 'error' | ''; message: string }>({ type: '', message: '' });
 
   // Initialize EmailJS
   useEffect(() => {
@@ -62,10 +63,9 @@ export default function ContactForm() {
     const code = e.target.value;
     const country = countries.find((c) => c.code === code) || null;
     setSelectedCountry(country);
-    setFormData((prev) => ({ ...prev, country: country?.name || '' }));
-    // Clear phone when country changes
-    setFormData((prev) => ({ ...prev, phone: '' }));
+    setFormData((prev) => ({ ...prev, country: country?.name || '', phone: '' }));
     setPhoneError('');
+    setStatusInfo({ type: '', message: '' });
   };
 
   const handlePhoneChange = (value: string | undefined) => {
@@ -93,19 +93,20 @@ export default function ContactForm() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    setStatusInfo({ type: '', message: '' });
 
     if (!selectedCountry) {
-      alert('Please select your country.');
+      setStatusInfo({ type: 'error', message: 'Please select your country.' });
       return;
     }
 
     if (!formData.phone) {
-      alert('Please enter your phone number.');
+      setPhoneError('Please enter your phone number.');
       return;
     }
 
     if (!validatePhone(formData.phone, selectedCountry)) {
-      alert(`Please enter a valid ${selectedCountry.name} phone number.`);
+      setPhoneError(`Please enter a valid ${selectedCountry.name} phone number.`);
       return;
     }
 
@@ -124,7 +125,7 @@ export default function ContactForm() {
       .send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams)
       .then(() => {
         setLoading(false);
-        alert('Your inquiry has been sent! We will get back to you soon.');
+        setStatusInfo({ type: 'success', message: 'Your inquiry has been sent! We will get back to you soon.' });
         setFormData({
           name: '',
           phone: '',
@@ -139,7 +140,10 @@ export default function ContactForm() {
       })
       .catch((error) => {
         setLoading(false);
-        alert('Something went wrong. Please try again or email us directly at sales.marketing@doyenph.com');
+        setStatusInfo({
+          type: 'error',
+          message: 'Something went wrong. Please try again or email us directly at sales.marketing@doyenph.com',
+        });
         console.error('EmailJS error:', error);
       });
   };
@@ -147,24 +151,29 @@ export default function ContactForm() {
   return (
     <div className="contact-form-body-wrapper">
       <form onSubmit={handleSubmit} id="contactForm">
-        {formData.regarding && (
-          <div className="form-group form-full regarding-group">
-            <label htmlFor="regarding">Regarding</label>
-            <div className="input-wrap">
-              <input
-                type="text"
-                id="regarding"
-                name="regarding"
-                value={formData.regarding}
-                readOnly
-                className="input-regarding"
-              />
-              <Lock className="field-icon" size={18} />
-            </div>
+        {statusInfo.message && (
+          <div className={`form-status-banner ${statusInfo.type}`}>
+            {statusInfo.message}
           </div>
         )}
 
         <div className="form-grid">
+          {formData.regarding && (
+            <div className="form-group form-full regarding-group">
+              <label htmlFor="regarding">Regarding</label>
+              <div className="input-wrap">
+                <input
+                  type="text"
+                  id="regarding"
+                  name="regarding"
+                  value={formData.regarding}
+                  readOnly
+                  className="input-regarding"
+                />
+                <Lock className="field-icon" size={18} />
+              </div>
+            </div>
+          )}
           {/* Row 1: Name | Country */}
           <div className="form-group">
             <label htmlFor="name">
@@ -217,7 +226,6 @@ export default function ContactForm() {
               <PhoneInput
                 international
                 country={selectedCountry?.code as CountryCode | undefined}
-                defaultCountry="PH"
                 value={formData.phone || undefined}
                 onChange={handlePhoneChange}
                 onBlur={handlePhoneBlur}
