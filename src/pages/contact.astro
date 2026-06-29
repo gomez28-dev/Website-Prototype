@@ -253,111 +253,7 @@ import ContactForm from '../components/contact/ContactForm';
     line-height: 1.6;
     padding-bottom: 30px;
   }
-  :global(.phone-hint) {
-    font-size: 1.2rem;
-    color: #aaa;
-    margin-top: 4px;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    gap: 6px;
-  }
-  :global(.phone-hint .digit-count) {
-    color: var(--primary);
-    font-weight: 600;
-  }
-  :global(.phone-hint .digit-count.valid) {
-    color: #2ecc71;
-  }
-  :global(.phone-error) {
-    color: #e74c3c !important;
-  }
 
-  /* Country select dropdown */
-  :global(.country-select) {
-    width: 100%;
-    padding: 13px 44px 13px 16px;
-    border: 1.5px solid var(--teal-border);
-    font-size: 1.45rem;
-    font-family: inherit;
-    background: #FFF;
-    color: #595959;
-    transition: border-color 0.25s, box-shadow 0.25s, background 0.25s;
-    border-radius: 0;
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    cursor: pointer;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23999' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 14px center;
-    padding-right: 40px;
-  }
-  :global(.country-select:focus) {
-    outline: none;
-    border-color: #c3c7c7;
-    background-color: #fff;
-  }
-  :global(.country-select option) {
-    font-size: 1.4rem;
-    padding: 8px;
-  }
-
-  /* Phone input wrapper */
-  :global(.phone-input-wrapper) {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-  }
-
-  /* Hide react-phone-number-input's built-in country selector */
-  :global(.PhoneInputCountry) {
-    display: none !important;
-  }
-
-  /* Style the phone input container */
-  :global(.PhoneInput) {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    border: 1.5px solid var(--teal-border);
-    background: #FFF;
-    transition: border-color 0.25s, box-shadow 0.25s, background 0.25s;
-    border-radius: 0;
-  }
-  :global(.PhoneInput:focus-within) {
-    outline: none;
-    border-color: #c3c7c7;
-    background: #fff;
-  }
-  :global(.PhoneInput input) {
-    flex: 1;
-    border: none !important;
-    outline: none;
-    padding: 13px 16px;
-    font-size: 1.45rem;
-    font-family: inherit;
-    color: #595959;
-    background: transparent;
-    width: 100%;
-  }
-  :global(.PhoneInput input::placeholder) {
-    color: #c3c7c7;
-    font-size: 1.35rem;
-  }
-  :global(.PhoneInputCountrySelectArrow) {
-    display: none;
-  }
-
-  /* Disabled state for phone input */
-  :global(.PhoneInput--disabled) {
-    opacity: 0.6;
-    background: #f5f5f5;
-    cursor: not-allowed;
-  }
-  :global(.PhoneInput--disabled input) {
-    cursor: not-allowed;
-  }
   :global(.char-counter) {
     position: absolute;
     bottom: 8px;
@@ -376,6 +272,23 @@ import ContactForm from '../components/contact/ContactForm';
   :global(.char-counter.over) {
     color: #e74c3c;
     font-weight: 700;
+  }
+
+  /* Inline validation */
+  :global(.field-error) {
+    font-size: 1.2rem;
+    color: #e74c3c;
+    margin-top: 4px;
+    display: block;
+  }
+  :global(.input-wrap.has-error input),
+  :global(.input-wrap.has-error textarea) {
+    border-color: #e74c3c !important;
+    background: #fff5f5;
+  }
+  :global(.input-wrap.has-error .phone-input-field) {
+    border-color: #e74c3c !important;
+    background: #fff5f5;
   }
 
   /* Regarding field styling */
@@ -607,6 +520,19 @@ import ContactForm from '../components/contact/ContactForm';
   .map-open-btn:hover {
     background: var(--primary);
     color: #fff;
+  }
+
+  /* Inline validation error styles */
+  :global(.field-error) {
+    font-size: 1.2rem;
+    color: #e74c3c;
+    margin-top: 4px;
+    display: block;
+  }
+  :global(.input-wrap.has-error input),
+  :global(.input-wrap.has-error textarea) {
+    border-color: #e74c3c !important;
+    background: #fff5f5;
   }
 
   /* MEDIA QUERIES FOR CONTACT PAGE */
