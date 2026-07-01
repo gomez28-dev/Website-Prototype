@@ -13,8 +13,12 @@ const { jobTitle } = Astro.props;
     <p>Submit your application for {jobTitle}</p>
   </div>
   <div class="form-body">
-    <form id="applyForm">
-      <!-- Hidden input for job title to populate in the EmailJS template -->
+    <form id="applyForm" enctype="multipart/form-data">
+      <!-- Web3Forms Hidden Fields -->
+      <input type="hidden" name="access_key" value="e4002463-e94f-4db7-beff-5bb7dbc72245" />
+      <input type="hidden" name="subject" value={`New Job Application - ${jobTitle}`} />
+      <input type="hidden" name="from_name" value="DOYEN Careers" />
+      <input type="hidden" name="replyto" id="replyto" value="" />
       <input type="hidden" name="job_title" value={jobTitle} />
 
       <div class="form-group">
@@ -38,16 +42,14 @@ const { jobTitle } = Astro.props;
       </div>
 
       <div class="form-group">
-        <label for="resume">Link to Resume <span>*</span></label>
-        <input 
-          type="url" 
-          id="resume" 
-          name="resume" 
-          class="form-control" 
-          placeholder="https://drive.google.com/... or https://dropbox.com/..." 
-          required 
-        />
-        <p class="file-limit-hint">Upload your resume to Google Drive, Dropbox, or OneDrive and paste the shareable link here. Make sure sharing settings are set to "Anyone with the link".</p>
+        <label for="resume">Upload Resume <span>*</span></label>
+        <div class="file-drop" id="fileDrop">
+          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="upload-icon"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>
+          <p id="fileDropText">Drag &amp; drop your resume here or click to browse</p>
+          <span class="file-name" id="fileName"></span>
+          <input type="file" id="resume" name="attachment" accept=".pdf,.doc,.docx" required />
+        </div>
+        <p class="file-limit-hint">Accepted formats: PDF, DOC, DOCX. Max file size: 10MB.</p>
       </div>
 
       <button type="submit" class="submit-btn" id="submitBtn">
@@ -207,40 +209,113 @@ const { jobTitle } = Astro.props;
 </style>
 
 <script>
-  import emailjs from '@emailjs/browser';
-
-  const EMAILJS_PUBLIC_KEY = import.meta.env.PUBLIC_EMAILJS_PUBLIC_KEY || 'eKyGjQqzlwi8gVTW7';
-  const EMAILJS_SERVICE_ID = import.meta.env.PUBLIC_EMAILJS_SERVICE_ID || 'service_5wed65w';
-  const EMAILJS_TEMPLATE_ID = 'template_apply';
-
-  // Initialize EmailJS
-  emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
-
   (function () {
     const form = document.getElementById('applyForm') as HTMLFormElement | null;
+    const dropZone = document.getElementById('fileDrop');
+    const fileInput = document.getElementById('resume') as HTMLInputElement | null;
+    const fileName = document.getElementById('fileName');
+    const fileText = document.getElementById('fileDropText');
+    const emailInput = document.getElementById('email') as HTMLInputElement | null;
+    const replyToInput = document.getElementById('replyto') as HTMLInputElement | null;
     const overlay = document.getElementById('sendingOverlay');
 
-    if (!form || !overlay) return;
+    if (!form || !fileInput || !dropZone || !fileName || !fileText || !overlay) return;
+
+    // Keep replyto field in sync with email input so replies go back to candidate
+    if (emailInput && replyToInput) {
+      emailInput.addEventListener('input', () => {
+        replyToInput.value = emailInput.value;
+      });
+    }
+
+    function handleFile(file: File) {
+      // Validate file size: limit is 10MB (10 * 1024 * 1024 bytes)
+      const maxBytes = 10 * 1024 * 1024;
+      if (file.size > maxBytes) {
+        alert(
+          `File size is too large (${(file.size / (1024 * 1024)).toFixed(1)}MB).\n` +
+          'The maximum allowed file size is 10MB.'
+        );
+        fileInput!.value = ''; // clear input
+        fileName!.style.display = 'none';
+        fileText!.style.display = 'block';
+        return;
+      }
+
+      fileName!.textContent = file.name;
+      fileName!.style.display = 'block';
+      fileText!.style.display = 'none';
+    }
+
+    fileInput.addEventListener('change', function () {
+      if (fileInput.files && fileInput.files.length > 0) {
+        handleFile(fileInput.files[0]);
+      }
+    });
+
+    dropZone.addEventListener('dragover', function (e) {
+      e.preventDefault();
+      dropZone.classList.add('dragover');
+    });
+
+    dropZone.addEventListener('dragleave', function () {
+      dropZone.classList.remove('dragover');
+    });
+
+    dropZone.addEventListener('drop', function (e) {
+      e.preventDefault();
+      dropZone.classList.remove('dragover');
+      if (e.dataTransfer && e.dataTransfer.files.length > 0) {
+        const file = e.dataTransfer.files[0];
+        fileInput.files = e.dataTransfer.files;
+        handleFile(file);
+      }
+    });
 
     form.addEventListener('submit', function (e) {
       e.preventDefault();
+
+      // Final validation
+      if (!fileInput.files || fileInput.files.length === 0) {
+        alert('Please upload your resume to submit the application.');
+        return;
+      }
+
+      const file = fileInput.files[0];
+      if (file.size > 10 * 1024 * 1024) {
+        alert('Please reduce your resume file size below 10MB.');
+        return;
+      }
+
       overlay.classList.add('active');
 
-      emailjs
-        .sendForm(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, form)
-        .then(() => {
-          overlay.classList.remove('active');
+      const formData = new FormData(form);
+
+      fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        body: formData
+      })
+      .then(async (response) => {
+        const result = await response.json();
+        overlay.classList.remove('active');
+        
+        if (response.status === 200 || result.success) {
           alert('Your application has been successfully submitted! Thank you.');
           form.reset();
-        })
-        .catch((error) => {
-          overlay.classList.remove('active');
-          alert(
-            'Something went wrong during submission.\n' +
-            'Please try again, or email your CV directly to hr@doyenph.com'
-          );
-          console.error('EmailJS Apply form submission error:', error);
-        });
+          fileName!.style.display = 'none';
+          fileText!.style.display = 'block';
+        } else {
+          alert(result.message || 'Something went wrong during submission. Please try again.');
+        }
+      })
+      .catch((error) => {
+        overlay.classList.remove('active');
+        alert(
+          'Something went wrong during submission.\n' +
+          'Please try again, or email your CV directly to hr@doyenph.com'
+        );
+        console.error('Web3Forms Apply form submission error:', error);
+      });
     });
   })();
 </script>
