@@ -38,14 +38,16 @@ const { jobTitle } = Astro.props;
       </div>
 
       <div class="form-group">
-        <label for="resume">Upload Resume <span>*</span></label>
-        <div class="file-drop" id="fileDrop">
-          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="upload-icon"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>
-          <p id="fileDropText">Drag &amp; drop your resume here or click to browse</p>
-          <span class="file-name" id="fileName"></span>
-          <input type="file" id="resume" name="resume" accept=".pdf,.doc,.docx" required />
-        </div>
-        <p class="file-limit-hint">Accepted formats: PDF, DOC, DOCX. Max file size: 45KB (EmailJS limit).</p>
+        <label for="resume">Link to Resume <span>*</span></label>
+        <input 
+          type="url" 
+          id="resume" 
+          name="resume" 
+          class="form-control" 
+          placeholder="https://drive.google.com/... or https://dropbox.com/..." 
+          required 
+        />
+        <p class="file-limit-hint">Upload your resume to Google Drive, Dropbox, or OneDrive and paste the shareable link here. Make sure sharing settings are set to "Anyone with the link".</p>
       </div>
 
       <button type="submit" class="submit-btn" id="submitBtn">
@@ -216,86 +218,20 @@ const { jobTitle } = Astro.props;
 
   (function () {
     const form = document.getElementById('applyForm') as HTMLFormElement | null;
-    const dropZone = document.getElementById('fileDrop');
-    const fileInput = document.getElementById('resume') as HTMLInputElement | null;
-    const fileName = document.getElementById('fileName');
-    const fileText = document.getElementById('fileDropText');
     const overlay = document.getElementById('sendingOverlay');
 
-    if (!form || !fileInput || !dropZone || !fileName || !fileText || !overlay) return;
-
-    function handleFile(file: File) {
-      // Validate file size: limit is 45KB (46080 bytes)
-      const maxBytes = 45 * 1024;
-      if (file.size > maxBytes) {
-        alert(
-          `File size is too large (${(file.size / 1024).toFixed(1)}KB).\n` +
-          'EmailJS free tier has a strict attachment limit. Please upload a resume smaller than 45KB,\n' +
-          'or email your CV directly to hr@doyenph.com with the subject line including the job title.'
-        );
-        fileInput!.value = ''; // clear input
-        fileName!.style.display = 'none';
-        fileText!.style.display = 'block';
-        return;
-      }
-
-      fileName!.textContent = file.name;
-      fileName!.style.display = 'block';
-      fileText!.style.display = 'none';
-    }
-
-    fileInput.addEventListener('change', function () {
-      if (fileInput.files && fileInput.files.length > 0) {
-        handleFile(fileInput.files[0]);
-      }
-    });
-
-    dropZone.addEventListener('dragover', function (e) {
-      e.preventDefault();
-      dropZone.classList.add('dragover');
-    });
-
-    dropZone.addEventListener('dragleave', function () {
-      dropZone.classList.remove('dragover');
-    });
-
-    dropZone.addEventListener('drop', function (e) {
-      e.preventDefault();
-      dropZone.classList.remove('dragover');
-      if (e.dataTransfer && e.dataTransfer.files.length > 0) {
-        const file = e.dataTransfer.files[0];
-        // Assign file to input
-        fileInput.files = e.dataTransfer.files;
-        handleFile(file);
-      }
-    });
+    if (!form || !overlay) return;
 
     form.addEventListener('submit', function (e) {
       e.preventDefault();
-
-      // Final validation
-      if (!fileInput.files || fileInput.files.length === 0) {
-        alert('Please upload your resume to submit the application.');
-        return;
-      }
-
-      const file = fileInput.files[0];
-      if (file.size > 45 * 1024) {
-        alert('Please reduce your resume file size below 45KB or email hr@doyenph.com directly.');
-        return;
-      }
-
       overlay.classList.add('active');
 
-      // Use emailjs.sendForm to submit the actual form containing the file
       emailjs
         .sendForm(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, form)
         .then(() => {
           overlay.classList.remove('active');
           alert('Your application has been successfully submitted! Thank you.');
           form.reset();
-          fileName!.style.display = 'none';
-          fileText!.style.display = 'block';
         })
         .catch((error) => {
           overlay.classList.remove('active');
