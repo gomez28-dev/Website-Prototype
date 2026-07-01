@@ -38,4 +38,4 @@ jobs:
       # 6. Deploy dist/ contents to Hostinger via rsync with Password
       - name: Deploy to Hostinger via rsync
         run: |
-          sshpass -p "${{ secrets.SSH_PASSWORD }}" rsync -avzr --delete --exclude='ims/' --exclude='_backup_old_site/' -e "ssh -o StrictHostKeyChecking=no -p 22" dist/ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/home/u358921359/domains/doyengroupofcompanies.com/public_html/
+          sshpass -p "${{ secrets.SSH_PASSWORD }}" rsync -avzr --delete --exclude='ims/' --exclude='_backup_old_site/' -e "ssh -o StrictHostKeyChecking=no -p 65002" dist/ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/home/u358921359/domains/doyengroupofcompanies.com/public_html/
