@@ -14,11 +14,10 @@ const { jobTitle } = Astro.props;
   </div>
   <div class="form-body">
     <form id="applyForm" enctype="multipart/form-data">
-      <!-- Web3Forms Hidden Fields -->
-      <input type="hidden" name="access_key" value="e4002463-e94f-4db7-beff-5bb7dbc72245" />
-      <input type="hidden" name="subject" value={`New Job Application - ${jobTitle}`} />
-      <input type="hidden" name="from_name" value="DOYEN Careers" />
-      <input type="hidden" name="replyto" id="replyto" value="" />
+      <!-- FormSubmit.co Hidden Fields -->
+      <input type="hidden" name="_subject" value={`New Job Application - ${jobTitle}`} />
+      <input type="hidden" name="_replyto" id="replyto" value="" />
+      <input type="hidden" name="_captcha" value="false" />
       <input type="hidden" name="job_title" value={jobTitle} />
 
       <div class="form-group">
@@ -291,7 +290,11 @@ const { jobTitle } = Astro.props;
 
       const formData = new FormData(form);
 
-      fetch('https://api.web3forms.com/submit', {
+      // Define the target email address for submissions.
+      // Simply replace this email when you are ready to switch from testing to production!
+      const targetEmail = 'gomezpogi28@gmail.com'; 
+
+      fetch(`https://formsubmit.co/ajax/${targetEmail}`, {
         method: 'POST',
         body: formData
       })
@@ -299,7 +302,7 @@ const { jobTitle } = Astro.props;
         const result = await response.json();
         overlay.classList.remove('active');
         
-        if (response.status === 200 || result.success) {
+        if (response.ok || result.success === 'true' || result.success === true) {
           alert('Your application has been successfully submitted! Thank you.');
           form.reset();
           fileName!.style.display = 'none';
@@ -314,7 +317,7 @@ const { jobTitle } = Astro.props;
           'Something went wrong during submission.\n' +
           'Please try again, or email your CV directly to hr@doyenph.com'
         );
-        console.error('Web3Forms Apply form submission error:', error);
+        console.error('FormSubmit Apply form submission error:', error);
       });
     });
   })();
