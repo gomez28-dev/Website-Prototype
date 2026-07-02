@@ -485,9 +485,6 @@ export default function ProductCatalog() {
                   <a href={getContactUrl(activeProduct)} className="action-btn btn-primary">
                     <Mail size={16} /> Request Quote
                   </a>
-                  <a href="/contact" className="action-btn btn-outline">
-                    <Phone size={16} /> Contact Us
-                  </a>
                 </div>
               </div>
             </div>
