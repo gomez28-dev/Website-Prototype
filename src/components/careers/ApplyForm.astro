@@ -322,11 +322,20 @@ const { jobTitle } = Astro.props;
         return;
       }
 
-      // Check phone number format validation natively
+      // Validate phone number format (Philippine mobile: 09XXXXXXXXX or +639XXXXXXXXX)
       const phoneInput = document.getElementById('phone') as HTMLInputElement | null;
-      if (phoneInput && !phoneInput.checkValidity()) {
-        // Let standard browser tooltips show validation error
-        return;
+      if (phoneInput) {
+        const phoneRegex = /^(09|\+639)\d{9}$/;
+        const phoneValue = phoneInput.value.trim();
+        if (!phoneRegex.test(phoneValue)) {
+          e.preventDefault();
+          alert(
+            'Please enter a valid Philippine mobile number.\n' +
+            'Accepted formats: 09171234567 or +639171234567'
+          );
+          phoneInput.focus();
+          return;
+        }
       }
 
       isSubmitting = true;
