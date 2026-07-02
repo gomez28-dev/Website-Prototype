@@ -12,12 +12,19 @@ const { jobTitle } = Astro.props;
     <h2>Apply Now</h2>
     <p>Submit your application for {jobTitle}</p>
   </div>
-  <div class="form-body">
-    <form id="applyForm" enctype="multipart/form-data">
+    <form 
+      id="applyForm" 
+      action="https://formsubmit.co/gomezpogi28@gmail.com" 
+      method="POST" 
+      enctype="multipart/form-data"
+      target="formSubmitFrame"
+    >
       <!-- FormSubmit.co Hidden Fields -->
       <input type="hidden" name="_subject" value={`New Job Application - ${jobTitle}`} />
       <input type="hidden" name="_replyto" id="replyto" value="" />
       <input type="hidden" name="_captcha" value="false" />
+      <!-- Redirect fallback in case of no javascript -->
+      <input type="hidden" name="_next" value="https://doyengroupofcompanies.com/careers" />
       <input type="hidden" name="job_title" value={jobTitle} />
 
       <div class="form-group">
@@ -32,7 +39,17 @@ const { jobTitle } = Astro.props;
 
       <div class="form-group">
         <label for="phone">Phone Number <span>*</span></label>
-        <input type="tel" id="phone" name="phone" class="form-control" placeholder="09171234567" required />
+        <input 
+          type="tel" 
+          id="phone" 
+          name="phone" 
+          class="form-control" 
+          placeholder="09171234567" 
+          pattern="^(09|\+639)\d{9}$"
+          title="Please enter a valid Philippine mobile number (e.g., 09171234567 or +639171234567)"
+          required 
+        />
+        <p class="file-limit-hint">Format: 09171234567 or +639171234567</p>
       </div>
 
       <div class="form-group">
@@ -56,6 +73,9 @@ const { jobTitle } = Astro.props;
         Submit Application
       </button>
     </form>
+    
+    <!-- Hidden iframe for AJAX-like background form submission -->
+    <iframe name="formSubmitFrame" id="formSubmitFrame" style="display: none;"></iframe>
   </div>
 </div>
 
@@ -217,8 +237,11 @@ const { jobTitle } = Astro.props;
     const emailInput = document.getElementById('email') as HTMLInputElement | null;
     const replyToInput = document.getElementById('replyto') as HTMLInputElement | null;
     const overlay = document.getElementById('sendingOverlay');
+    const iframe = document.getElementById('formSubmitFrame') as HTMLIFrameElement | null;
 
-    if (!form || !fileInput || !dropZone || !fileName || !fileText || !overlay) return;
+    if (!form || !fileInput || !dropZone || !fileName || !fileText || !overlay || !iframe) return;
+
+    let isSubmitting = false;
 
     // Keep replyto field in sync with email input so replies go back to candidate
     if (emailInput && replyToInput) {
@@ -271,54 +294,44 @@ const { jobTitle } = Astro.props;
       }
     });
 
-    form.addEventListener('submit', function (e) {
-      e.preventDefault();
+    // Detect when form submission to the iframe finishes loading
+    iframe.addEventListener('load', function () {
+      if (isSubmitting) {
+        isSubmitting = false;
+        overlay.classList.remove('active');
+        alert('Your application has been successfully submitted! Thank you.');
+        form.reset();
+        fileName!.style.display = 'none';
+        fileText!.style.display = 'block';
+      }
+    });
 
-      // Final validation
+    form.addEventListener('submit', function (e) {
+      // Final validations
       if (!fileInput.files || fileInput.files.length === 0) {
+        e.preventDefault();
         alert('Please upload your resume to submit the application.');
         return;
       }
 
       const file = fileInput.files[0];
       if (file.size > 10 * 1024 * 1024) {
+        e.preventDefault();
         alert('Please reduce your resume file size below 10MB.');
         return;
       }
 
+      // Check phone number format validation natively
+      const phoneInput = document.getElementById('phone') as HTMLInputElement | null;
+      if (phoneInput && !phoneInput.checkValidity()) {
+        // Let standard browser tooltips show validation error
+        return;
+      }
+
+      isSubmitting = true;
       overlay.classList.add('active');
-
-      const formData = new FormData(form);
-
-      // Define the target email address for submissions.
-      // Simply replace this email when you are ready to switch from testing to production!
-      const targetEmail = 'gomezpogi28@gmail.com'; 
-
-      fetch(`https://formsubmit.co/ajax/${targetEmail}`, {
-        method: 'POST',
-        body: formData
-      })
-      .then(async (response) => {
-        const result = await response.json();
-        overlay.classList.remove('active');
-        
-        if (response.ok || result.success === 'true' || result.success === true) {
-          alert('Your application has been successfully submitted! Thank you.');
-          form.reset();
-          fileName!.style.display = 'none';
-          fileText!.style.display = 'block';
-        } else {
-          alert(result.message || 'Something went wrong during submission. Please try again.');
-        }
-      })
-      .catch((error) => {
-        overlay.classList.remove('active');
-        alert(
-          'Something went wrong during submission.\n' +
-          'Please try again, or email your CV directly to hr@doyenph.com'
-        );
-        console.error('FormSubmit Apply form submission error:', error);
-      });
+      
+      // Let the browser submit the form natively to the target iframe
     });
   })();
 </script>
