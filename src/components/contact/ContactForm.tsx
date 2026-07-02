@@ -196,7 +196,7 @@ export default function ContactForm() {
         <div className="form-grid">
           {formData.regarding && (
             <div className="form-group form-full regarding-group">
-              <label htmlFor="regarding">Regarding</label>
+              <label htmlFor="regarding">Request quote</label>
               <div className="input-wrap">
                 <input
                   type="text"
